@@ -1,0 +1,1554 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap');
+:root {
+    --ink:#171816;
+    --paper:#f1f0ea;
+    --acid:#d3fdff;
+    --muted:#77766f;
+    --line:#c9c8c0
+}
+* {
+    box-sizing:border-box
+}
+html {
+    scroll-behavior: smooth;
+    /* Projekte rasten beim vertikalen Scrollen ein */
+    scroll-snap-type: y proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+    display: none;
+}
+/* Der Browser-Viewport wird zum Snap-Container */
+html,
+body {
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 0;
+}
+body {
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Manrope,Arial,sans-serif;
+    cursor:none
+}
+/* ============ HEADER: HELL AUF DUNKLEN BEREICHEN ============ */
+.site-header {
+    height: 78px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3vw;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 20;
+
+    /* Standard: Die Landingpage, Historie, Portfolio und About sind dunkel. Daher sind Monogramm und Menü standardmäßig hell. */
+    color: var(--paper);
+
+    mix-blend-mode: normal;
+    filter: none;
+
+    transition: color 0.15s ease;
+}
+.site-header {
+    color: var(--paper);
+}
+.site-header.on-light {
+    color: var(--ink);
+}
+/* Monogramm übernimmt immer die Headerfarbe */
+.brand {
+    color: inherit;
+}
+/* Menü-Button und Linie übernehmen die Headerfarbe */
+.menu-toggle,
+.menu-close {
+    color: inherit;
+}
+.menu-toggle span {
+    border-top-color: currentColor;
+}
+
+.brand {
+    font-size:1.15rem;
+    font-weight:800;
+    letter-spacing:-.08em;
+    color:inherit;
+    text-decoration:none
+}
+.brand span {
+    font-size:.65rem;
+    vertical-align:top;
+    margin-left:2px
+}
+.brand {
+    transition: transform 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.brand:hover {
+    transform: translateY(-3px) rotate(-4deg) scale(1.08);
+    letter-spacing: -0.04em;
+}
+/* Menü oben rechts: dezente Bewegung als Klick-Hinweis */
+.menu-toggle {
+    transition: transform 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.menu-toggle:hover {
+    transform: translateY(-3px) rotate(4deg) scale(1.08);
+    letter-spacing: 0.04em;
+}
+
+/* Die kleine Linie neben „Menü“ bewegt sich leicht mit */
+.menu-toggle span {
+    transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.menu-toggle:hover span {
+    width: 34px;
+    transform: translateX(4px);
+}
+/* Monogramm: dezente Bewegung als Hinweis auf Klickbarkeit */
+
+.menu-toggle,.menu-close {
+    border:0;
+    background:none;
+    color:inherit;
+    font:500 .68rem/1 'DM Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    cursor:pointer
+}
+.menu-toggle span {
+    display:inline-block;
+    width:25px;
+    border-top:1px solid;
+    margin:0 0 3px 9px
+}
+.menu {
+    position:fixed;
+    inset:0;
+    background:var(--ink);
+    color:var(--paper);
+    z-index:30;
+    transform:translateY(-101%);
+    transition:transform .65s cubic-bezier(.76,0,.24,1);
+    padding:2.5vw 3vw;
+    display:flex;
+    flex-direction:column
+}
+.menu.open {
+    transform:translateY(0)
+}
+.menu-top {
+    display:flex;
+    justify-content:space-between;
+    font:400 .68rem 'DM Mono',monospace;
+    text-transform:uppercase
+}
+.menu nav {
+    margin:auto 0
+}
+.menu nav a {
+    display:block;
+    color:inherit;
+    text-decoration:none;
+    border-top:1px solid #4d4e48;
+    padding:1.2vh 0;
+    font-size:clamp(2.7rem,8vw,7rem);
+    letter-spacing:-.08em;
+    line-height:1
+}
+.menu nav a small {
+    font:400 .65rem 'DM Mono',monospace;
+    vertical-align:middle;
+    margin-right:1rem
+}
+.menu nav a:hover {
+    color:var(--acid)
+}
+.menu-links {
+    display:flex;
+    gap:2rem;
+    font:.7rem 'DM Mono',monospace
+}
+.menu-links a {
+    color:inherit
+}
+.progress {
+    position:fixed;
+    right:16px;
+    top:110px;
+    z-index:19;
+    width:1px;
+    height:100px;
+    background:#bab9b1
+}
+.progress span {
+    display:block;
+    width:100%;
+    height:0;
+    background:var(--ink)
+}
+.cursor-dot {
+    position: fixed;
+    z-index: 100;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    /* Grundfarbe für den Kontrast-Effekt */
+    background: #ffffff;
+
+    /*Cursor wechselt abhängig vom Untergrund: hell auf dunkel, dunkel auf hell.*/
+    mix-blend-mode: difference;
+
+    /*
+      Entfernt farbige Mischfarben: Ergebnis wird praktisch nur Schwarz oder Weiß.*/
+    -webkit-backdrop-filter: grayscale(1) contrast(100);
+    backdrop-filter: grayscale(1) contrast(100);
+
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition:
+        width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.22s ease,
+        opacity 0.18s ease,
+        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Auf klickbaren Elementen wird nur das Element selbst hervorgehoben. Der eigene Cursor wird dabei unsichtbar. */
+.cursor-dot.hover {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+/* ============ LANDINGPAGE / HERO ============ */
+.hero {
+    min-height: 100svh;
+    padding: 24vh 7vw 5vh;
+    display: flex;
+    flex-direction: column;
+
+    /* Gleicher Hintergrund wie Historie, Portfolio und About */
+    background: var(--ink);
+    color: var(--paper);
+}
+/* Dezente helle Sekundärtexte im dunklen Hero */
+.hero .eyebrow,
+.hero .scroll-hint {
+    color: #bcbdb6;
+}
+/* Titel und Fließtext hell */
+.hero-title,
+.hero-meta {
+    color: var(--paper);
+}
+.eyebrow,.section-label,footer {
+    font:400 .65rem 'DM Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.035em
+}
+.hero-title {
+    font-size:clamp(3.7rem,8.3vw,9.5rem);
+    line-height:.99;
+    letter-spacing:-.08em;
+    font-weight:600;
+    margin:4.5vh 0 auto;
+    max-width: min(1180px, 100%);
+}
+/* ============ HERO: GEHEIMER TEXT IM ACID-MAUSKREIS ============ */
+
+/*
+  hero-title ist jetzt der gemeinsame Container für:
+  - hero-title-main: sichtbarer Ausgangstext
+  - hero-title-secret: Text innerhalb des Acid-Kreises */
+.hero-title {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Der normale Text behält exakt die bisherige Darstellung */
+.hero-title-main {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+    font: inherit;
+}
+
+/* Beide Textebenen erhalten identische Zeilenformatierung */
+.hero-title-main .line,
+.hero-title-secret .line {
+    display: block;
+}
+
+.hero-title-secret {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --reveal-size: 0px;
+
+    /*Der Kreis darf 220px über die Textbox hinausreichen. Der Text beginnt durch das gleich große Padding trotzdem exakt an der gleichen Stelle wie der normale Hero-Text.*/
+    --reveal-space: 220px;
+
+    position: absolute;
+    z-index: 2;
+
+    top: calc(-1 * var(--reveal-space));
+    right: calc(-1 * var(--reveal-space));
+    bottom: calc(-1 * var(--reveal-space));
+    left: calc(-1 * var(--reveal-space));
+
+    padding: var(--reveal-space);
+    display: block;
+    pointer-events: none;
+
+    color: var(--ink);
+    background: var(--acid);
+
+    /* Mauskoordinaten werden um den zusätzlichen Außenraum korrigiert. So bleibt der Mittelpunkt exakt unter der Maus. */
+    -webkit-clip-path: circle(
+        var(--reveal-size)
+        at calc(var(--mouse-x) + var(--reveal-space))
+        calc(var(--mouse-y) + var(--reveal-space))
+    );
+    clip-path: circle(
+        var(--reveal-size)
+        at calc(var(--mouse-x) + var(--reveal-space))
+        calc(var(--mouse-y) + var(--reveal-space))
+    );
+
+    /* Keine Transition: Der Kreis sitzt ohne Verzögerung direkt an der Maus. */
+    transition: none
+}
+
+/* Während der große Acid-Kreis aktiv ist, verschwindet der kleine Standard-Cursorpunkt.*/
+.cursor-dot.hero-text-hover {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+}
+.hero-title .line {
+    display:block
+}
+.hero-title em,.about-copy em {
+    font-family:'Playfair Display',serif;
+    font-weight:500;
+    letter-spacing:-.08em
+}
+.hero-actions {
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-top:5vh
+}
+/* Hero-Icons: hell auf dunkler Landingpage */
+.hero-icon,
+.resume-cta {
+    height: 48px;
+    border: 1px solid var(--paper);
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+.hero-icon {
+    width:48px;
+    border-radius:50%
+}
+.hero-icon svg {
+    height:20px;
+    width:20px;
+    fill:currentColor
+}
+.resume-cta {
+    padding:0 19px;
+    margin-left:9px;
+    border-radius:24px;
+    font:500 .67rem 'DM Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    gap:10px
+}
+.resume-cta span {
+    font-size:1rem
+}
+/* Hover: hell gefüllt, Icon und Text dunkel */
+.hero-icon:hover,
+.resume-cta:hover {
+    background: var(--paper);
+    color: var(--ink);
+    transform: scale(1.12);
+    box-shadow: 0 0 0 4px var(--acid);
+}
+.hero-meta {
+    align-self:flex-end;
+    width:min(350px,100%);
+    display:flex;
+    gap:1rem;
+    align-items:end;
+    line-height:1.45;
+    font-size:.78rem
+}
+.scroll-hint {
+    font:.63rem 'DM Mono',monospace;
+    text-transform:uppercase;
+    margin-top:auto
+}
+.scroll-hint span {
+    display:inline-block;
+    margin-left:5px;
+    animation:bob 1.8s infinite
+}
+@keyframes bob {
+    50% {
+        transform:translateY(6px)
+    }
+}
+.section {
+    padding:12vh 7vw
+}
+.section-label {
+    display:grid;
+    grid-template-columns:1fr 4fr 1fr;
+    border-top:1px solid var(--line);
+    padding:12px 0 7vh;
+    color:var(--ink);
+}
+.section-label span:last-child {
+    text-align:right
+}
+
+/* ============ HISTORIE ============ */
+.history {
+    background: var(--ink);
+    color: var(--paper);
+    padding-bottom: 0;
+}
+
+.history .section-label {
+    border-color: #484944;
+    color: #bcbdb6;
+}
+
+/* Gesamtcontainer mit oberer Trennlinie */
+.history-grid {
+    margin-top: 7vh;
+    border-top: 1px solid #484944;
+}
+
+/* Eine Station: Jahr links, berufliche Information rechts */
+.history-item {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(120px, 22%) 1fr;
+    gap: 2rem;
+
+    min-height: 180px;
+    padding: 2rem clamp(1.25rem, 3vw, 3.5rem);
+
+    border-bottom: 1px solid #484944;
+    overflow: hidden;
+}
+
+/* Heller Balken startet in der Mitte. Er liegt über den normalen Inhalten und wächst nach oben/unten.*/
+.history-item::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+
+    background: var(--acid);
+
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.history-item:hover::before {
+    transform: scaleY(1);
+}
+/* Jahr bleibt unter dem Hover-Balken und wird dadurch überdeckt */
+.history-year {
+    position: relative;
+    z-index: 0;
+
+    font-size: clamp(1.8rem, 3vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    padding-bottom: 0.12em;
+}
+/* Normaler Inhalt */
+.history-content {
+    display: grid;
+    align-items: center;
+}
+.history-default {
+    position: relative;
+    z-index: 0;
+    grid-area: 1 / 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+/* Positionsbezeichnung */
+.history-role {
+    font-size: clamp(1.8rem, 3vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    padding-bottom: 0.12em;
+}
+/* Unternehmen */
+.history-company {
+    color: #bcbdb6;
+    font-size: 1rem;
+}
+/* Alternativer Text liegt über dem Balken. Er wird mit derselben Mitte-nach-außen-Bewegung freigelegt.*/
+.history-hover {
+    position: relative;
+    z-index: 2;
+    grid-area: 1 / 1;
+
+    color: var(--ink);
+    font-size: clamp(1.8rem, 3vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    padding-bottom: 0.12em;
+
+    -webkit-clip-path: inset(50% 0 50% 0);
+    clip-path: inset(50% 0 50% 0);
+
+    transition: clip-path 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.history-item:hover .history-hover {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+}
+/* Tablet und Smartphone */
+@media (max-width: 700px) {
+    .history-grid {
+        margin-top: 5vh;
+    }
+    .history-item {
+        grid-template-columns: 75px 1fr;
+        gap: 1rem;
+        min-height: 135px;
+        padding: 1.5rem 1.25rem;
+    }
+    .history-year,
+    .history-role,
+    .history-hover {
+        font-size: clamp(1.3rem, 6vw, 2rem);
+    }
+    .history-company {
+        font-size: 0.8rem;
+    }
+}
+.work {
+    background:var(--ink);
+    color:var(--paper)
+}
+
+/* ========== PROJEKTE ========== */
+
+/* Genug Platz vor und nach Projekten, damit auch erstes und letztes Projekt mittig einrasten können */
+.work {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+}
+.project:first-of-type {
+    scroll-margin-top: 20vh;
+}
+.project:last-of-type {
+    scroll-margin-bottom: 25vh;
+}
+.work .section-label {
+    border-color:#484944;
+    color:#bcbdb6
+}
+.project {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    margin: 0 0 14vh;
+}
+/* Letztes Projekt: deutlich weniger schwarzer Abstand nach unten */
+.project:last-child {
+    margin-bottom: 3vh;
+}
+.project:last-of-type {
+    scroll-margin-bottom: 5vh;
+}
+.project-visual {
+    height:min(54vw,620px);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:17px
+}
+.project-info {
+    display:flex;
+    justify-content:space-between;
+    gap:2rem
+}
+.project-info h2 {
+    font-size:clamp(1.8rem,3.5vw,4rem);
+    line-height:.94;
+    letter-spacing:-.07em;
+    margin:0
+}
+.project-info div {
+    width:min(310px,36%);
+    font:.7rem/1.5 'DM Mono',monospace
+}
+.project-info p {
+    margin:0 0 7px
+}
+.visual-one {
+    background:#d9d4ca
+}
+.orb {
+    position:absolute;
+    width:45%;
+    aspect-ratio:1;
+    border-radius:50%;
+    background:#ff7044;
+    top:13%;
+    left:20%;
+    box-shadow:18vw 14vw 0 #3652ff;
+    transition:transform .7s cubic-bezier(.2,.8,.2,1)
+}
+.grid-lines {
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,transparent 49.7%,#222 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#222 50%,transparent 50.3%);
+    opacity:.8
+}
+.project:hover .orb {
+    transform:scale(1.15) rotate(15deg)
+}
+.project-visual b {
+    position:absolute;
+    right:2%;
+    bottom:1%;
+    font:500 7rem/.8 'DM Mono',monospace;
+    letter-spacing:-.1em;
+    opacity:.7
+}
+.visual-two {
+    background:var(--acid);
+    width:72%;
+    margin-left:auto
+}
+.bar {
+    position:absolute;
+    display:block;
+    background:var(--ink);
+    transition:transform .5s ease
+}
+.bar-a {
+    width:74%;
+    height:21%;
+    left:-3%;
+    top:18%;
+    transform:rotate(-17deg)
+}
+.bar-b {
+    width:60%;
+    height:22%;
+    right:-7%;
+    top:47%;
+    transform:rotate(21deg)
+}
+.bar-c {
+    width:48%;
+    height:15%;
+    left:10%;
+    bottom:-5%;
+    transform:rotate(-8deg)
+}
+.project:hover .bar-a {
+    transform:rotate(-8deg) translateX(5%)
+}
+.project:hover .bar-b {
+    transform:rotate(12deg) translateX(-7%)
+}
+.visual-three {
+    background:#716e62
+}
+.sun {
+    position:absolute;
+    width:36%;
+    aspect-ratio:1;
+    border-radius:50%;
+    background:var(--acid);
+    right:18%;
+    top:11%;
+    transition:transform .7s ease
+}
+.shape {
+    position:absolute;
+    left:11%;
+    bottom:-11%;
+    width:65%;
+    height:70%;
+    background:#eeebe3;
+    clip-path:polygon(0 100%,35% 0,67% 65%,100% 13%,100% 100%)
+}
+.project:hover .sun {
+    transform:translate(-30px,20px) scale(1.2)
+}
+
+
+/* ============ MEHR ÜBER MICH: INTERAKTIVE FENSTER ============ */
+
+.about {
+    min-height: 100svh;
+    overflow: hidden;
+}
+/* About-Bereich: gleicher dunkler Hintergrund wie Portfolio */
+.about {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+/* Label und Trennlinie für dunklen Hintergrund lesbar machen */
+.about .section-label {
+    border-color: #484944;
+    color: #bcbdb6;
+}
+/*
+  Vier gleich breite Fenster.
+  Die negative Margin gleicht das Standard-Section-Padding aus,
+  damit die Fläche über die gesamte Browserbreite reichen kann.
+*/
+.about-panels {
+    display: flex;
+    width: calc(100% + 14vw);
+    min-height: min(72svh, 780px);
+    margin: 7vh -7vw 0;
+    overflow: hidden;
+    background: var(--ink);
+}
+
+/* Ein Fenster im Normalzustand */
+.about-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    flex: 1 1 0;
+    min-width: 0;
+
+    cursor: none;
+    color: var(--paper);
+
+    transition:
+        flex-grow 0.55s cubic-bezier(0.76, 0, 0.24, 1),
+        filter 0.55s ease;
+}
+
+/*
+  Das aktive Fenster wird maximal 1,5-mal so breit
+  wie eines der vier Ausgangsfenster.
+
+  Rechnung:
+  aktiv = flex-grow: 1.5
+  übrige = flex-grow: 0.8333
+*/
+.about-panels:has(.about-panel:hover) .about-panel,
+.about-panels.has-active-panel .about-panel {
+    flex-grow: 0.8333;
+}
+
+.about-panels:has(.about-panel:hover) .about-panel:hover,
+.about-panels.has-active-panel .about-panel.is-active {
+    flex-grow: 1.5;
+}
+
+/* Bild füllt das Fenster ohne Verzerrung */
+.about-panel__image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    /*
+      Normalzustand: alle Bilder ausgegraut und etwas gedämpft.
+    */
+    filter: grayscale(1) saturate(0) brightness(0.65) contrast(0.9);
+    transform: scale(1.04);
+
+    transition:
+        filter 0.55s ease,
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Beim Hover wird nur das jeweilige Bild farbig und leicht größer */
+.about-panel:hover .about-panel__image,
+.about-panel.is-active .about-panel__image {
+    filter: grayscale(0) saturate(1) brightness(0.9) contrast(1);
+    transform: scale(1.1);
+}
+
+/*
+  Dunkler Verlauf für lesbare Typografie.
+  Im Hover wird der Verlauf etwas transparenter,
+  damit das Bild stärker sichtbar wird.
+*/
+.about-panel__overlay {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+
+    background: linear-gradient(
+        180deg,
+        rgba(23, 24, 22, 0.1) 0%,
+        rgba(23, 24, 22, 0.2) 45%,
+        rgba(23, 24, 22, 0.86) 100%
+    );
+
+    transition: background 0.55s ease;
+}
+
+.about-panel:hover .about-panel__overlay,
+.about-panel.is-active .about-panel__overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(23, 24, 22, 0.06) 0%,
+        rgba(23, 24, 22, 0.08) 42%,
+        rgba(23, 24, 22, 0.78) 100%
+    );
+}
+
+/*
+  Die Überschriften sitzen im Ausgangszustand
+  im oberen/mittleren Bereich des jeweiligen Fensters.
+*/
+.about-panel__content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    padding: clamp(1.5rem, 3vw, 3.5rem);
+
+    color: var(--paper);
+}
+
+/* Überschrift */
+.about-panel__content h3 {
+    margin: 22vh 0 0;
+
+    font-size: clamp(1.8rem, 3.4vw, 4.2rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+
+    transition:
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        letter-spacing 0.55s ease;
+}
+
+/*
+  Der Beschreibungstext ist zunächst verborgen.
+  Beim Hover erscheint er mit deutlich Abstand
+  unterhalb der Überschrift.
+*/
+.about-panel__content p {
+    max-width: 28ch;
+    margin: clamp(3rem, 8vh, 6.5rem) 0 0;
+
+    font: 400 clamp(0.78rem, 1vw, 0.95rem) / 1.6
+        "DM Mono", monospace;
+
+    opacity: 0;
+    transform: translateY(16px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Text wird beim aktiven Fenster sichtbar */
+.about-panel:hover .about-panel__content p,
+.about-panel.is-active .about-panel__content p {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.13s;
+}
+
+/*
+  Ausrichtung der linken Spalte:
+  Überschrift und Beschreibung linksbündig.
+*/
+.about-panel--left .about-panel__content {
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Beide mittleren Spalten: mittig */
+.about-panel--center .about-panel__content {
+    align-items: center;
+    text-align: center;
+}
+
+.about-panel--center .about-panel__content p {
+    text-align: center;
+}
+
+/*
+  Rechte Spalte:
+  Überschrift und Beschreibung rechtsbündig.
+*/
+.about-panel--right .about-panel__content {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.about-panel--right .about-panel__content p {
+    text-align: right;
+}
+
+/* Sichtbarer Fokus beim Navigieren mit Tab */
+.about-panel:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: -7px;
+}
+
+/* ============ MOBIL: Fenster untereinander ============ */
+@media (max-width: 700px) {
+    .about-panels {
+        flex-direction: column;
+        width: calc(100% + 12vw);
+        min-height: auto;
+        margin: 5vh -6vw 0;
+    }
+
+    .about-panel {
+        min-height: 52svh;
+        flex: none;
+    }
+
+    /*
+      Auf Mobilgeräten keine Breitenanimation:
+      Das aktive Fenster wird stattdessen etwas höher.
+    */
+    .about-panels:has(.about-panel:hover) .about-panel,
+    .about-panels.has-active-panel .about-panel,
+    .about-panels:has(.about-panel:hover) .about-panel:hover,
+    .about-panels.has-active-panel .about-panel.is-active {
+        flex-grow: 0;
+    }
+
+    .about-panel__content h3 {
+        margin-top: 12vh;
+    }
+
+    .about-panel__content p {
+        margin-top: 3.5rem;
+    }
+}
+
+/* ============ HISTORIE: Scroll-Fill für bestehende Stationen ============ */
+
+.history-fill {
+    --fill: 0;
+
+    /* Anfang: gedämpftes Grau. Beim Scrollen füllt sich der vorhandene Text von links nach rechts weiß.*/
+    color: transparent;
+    background: linear-gradient(
+        90deg,
+        var(--paper) 0%,
+        var(--paper) calc(var(--fill) * 1%),
+        #666761 calc(var(--fill) * 1%),
+        #666761 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+/* ============ KONTAKT / CONNECT ============ */
+.contact {
+    background: var(--ink);
+    color: var(--paper);
+    min-height: 100vh;
+    padding-bottom: 0;
+}
+/* Label auf dunklem Hintergrund */
+.contact .section-label {
+    border-color: #484944;
+    color: #bcbdb6;
+}
+/* Trennlinie oberhalb der Link-Flächen */
+.connect-grid {
+    margin-top: 7vh;
+    border-top: 1px solid #484944;
+}
+
+/* Einzelne Link-Fläche */
+.connect-item {
+    position: relative;
+    isolation: isolate;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 2rem;
+
+    min-height: 145px;
+    padding: 1.4rem clamp(1.25rem, 3vw, 3.5rem);
+
+    border-bottom: 1px solid #484944;
+    overflow: hidden;
+
+    /* Normaler Linktext: hell auf dunklem Hintergrund */
+    color: var(--paper);
+    text-decoration: none;
+}
+
+/*
+  Hover-Balken:
+  --acid wächst vertikal aus der Mitte und liegt über
+  dem normalen weißen Text und dem normalen weißen Pfeil.
+*/
+.connect-item::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+
+    background: var(--acid);
+
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.connect-item:hover::before {
+    transform: scaleY(1);
+}
+
+/* Textcontainer für Normaltext und geheimen Text */
+.connect-content {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+}
+
+/*
+  Normaler Text:
+  Er ist immer sichtbar, wird beim Hover aber physisch
+  vom Acid-Balken überdeckt.
+*/
+.connect-name {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 0;
+
+    color: var(--paper);
+    font-size: clamp(2.5rem, 5.5vw, 6.4rem);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+}
+/*
+  Geheimer Text:
+  Liegt über dem Acid-Balken und wird aus der Mitte sichtbar.
+*/
+.connect-description {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 2;
+
+    color: var(--ink);
+    font-size: clamp(2.5rem, 5.5vw, 6.4rem);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+
+    -webkit-clip-path: inset(50% 0 50% 0);
+    clip-path: inset(50% 0 50% 0);
+
+    transition: clip-path 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.connect-item:hover .connect-description {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+}
+/* Container für normalen und geheimen Pfeil */
+.connect-arrow {
+    position: relative;
+    display: grid;
+    width: 1em;
+    height: 1em;
+
+    font-size: clamp(2rem, 4vw, 4.5rem);
+    line-height: 1;
+}
+/*
+  Normaler Pfeil:
+  Weiß, immer sichtbar, aber beim Hover unter dem Acid-Balken.
+*/
+.connect-arrow-base {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 0;
+
+    color: var(--paper);
+}
+/*
+  Geheimer Pfeil:
+  Schwarz, über dem Acid-Balken, zunächst in der Mitte verborgen.
+*/
+.connect-arrow-hover {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 2;
+
+    color: var(--ink);
+
+    -webkit-clip-path: inset(50% 0 50% 0);
+    clip-path: inset(50% 0 50% 0);
+
+    transition: clip-path 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.connect-item:hover .connect-arrow-hover {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+}
+
+/* Mobilansicht */
+@media (max-width: 700px) {
+    .connect-grid {
+        margin-top: 5vh;
+    }
+    .connect-item {
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem;
+    min-height: 120px;
+    }
+    .connect-number {
+        font-size: 0.6rem;
+    }
+    .connect-description {
+        font-size: 0.6rem;
+    }
+    .connect-arrow {
+        font-size: 2rem;
+    }
+}
+footer {
+    padding:20px 3vw;
+    display:flex;
+    justify-content:space-between;
+    background:var(--ink);
+    color:var(--paper)
+}
+footer p {
+    margin:0
+}
+footer a {
+    color:var(--acid)
+}
+.reveal {
+    opacity:0;
+    transform:translateY(32px);
+    transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)
+}
+.reveal.in {
+    opacity:1;
+    transform:none
+}
+@media(max-width:700px) {
+    body {
+        cursor:auto
+    }
+    .cursor-dot {
+        display:none
+    }
+    .site-header {
+        height:62px
+    }
+    .hero {
+        padding:20vh 6vw 4vh
+    }
+    .hero-title {
+        font-size:clamp(3.2rem,15vw,5.5rem)
+    }
+    .hero-actions {
+        margin-top:4vh
+    }
+    .hero-meta {
+        align-self:auto;
+        margin-top:7vh
+    }
+    .section {
+        padding:9vh 6vw
+    }
+    .section-label {
+        grid-template-columns:50px 1fr
+    }
+    .section-label span:last-child {
+        display:none
+    }
+    .project {
+        margin-bottom:10vh
+    }
+    .project-visual,.project-right .project-visual {
+        width:100%;
+        height:75vw;
+        margin-left:0
+    }
+    .project-info {
+        display:block
+    }
+    .project-info h2 {
+        font-size:2.3rem;
+        margin-bottom:1rem
+    }
+    .project-info div {
+        width:100%
+    }
+    .about-copy {
+        margin-top:10vh
+    }
+    .contact {
+        min-height:55vh
+    }
+    footer {
+        display:block;
+        line-height:1.8
+    }
+    .progress {
+        display:none
+    }
+        /* Auf Touch-Geräten kein Maus-Kreis-Effekt */
+    .hero-title-secret {
+        display: none;
+    }
+}
+
+/* Eigenen Cursor auch auf klickbaren Elementen beibehalten */
+a,
+button,
+.menu-toggle,
+.menu-close {
+    cursor: none;
+}
+
+/* ============ DARK / LIGHT MODE ============ */
+
+/*
+  Zusätzliche feste Farben:
+  --ink und --paper werden im Light Mode getauscht.
+  --true-dark bleibt immer wirklich schwarz/dunkel.
+*/
+:root {
+    --true-dark: #171816;
+    --warm-white: #f1f0ea;
+}
+
+/*
+  Standard: Dark Mode.
+  Deine bestehenden Werte bleiben unverändert:
+  --ink   = dunkler Hintergrund
+  --paper = helle Schrift
+*/
+body {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+/*
+  Light Mode:
+  Alle bisherigen var(--ink)-Flächen werden warmweiß.
+  Alle bisherigen var(--paper)-Texte werden schwarz.
+  --acid wird ausdrücklich NICHT verändert.
+*/
+body.light-mode {
+    --ink: #f1f0ea;
+    --paper: #171816;
+    --line: #c9c8c0;
+
+    background: var(--ink);
+    color: var(--paper);
+}
+
+/* Header, Monogramm und Menü übernehmen automatisch var(--paper) */
+.site-header {
+    color: var(--paper);
+}
+
+/* Sicherstellen, dass die Header-Elemente die aktuelle Headerfarbe erben */
+.brand,
+.menu-toggle,
+.menu-close {
+    color: inherit;
+}
+
+.menu-toggle span {
+    border-top-color: currentColor;
+}
+
+/*
+  Elemente auf Acid-Flächen:
+  Der geheime Text muss in BEIDEN Modi schwarz bleiben,
+  nicht warmweiß, wenn --ink im Light Mode getauscht wird.
+*/
+.hero-title-secret,
+.history-hover,
+.connect-description,
+.connect-arrow-hover {
+    color: var(--true-dark);
+}
+
+/*
+  Gleiche Korrektur für dunkle grafische Balken:
+  Sie bleiben auch im Light Mode wirklich dunkel.
+*/
+.bar,
+.progress span {
+    background: var(--true-dark);
+}
+/*
+  Auch im hellen Modus bleibt der untere Bildverlauf dunkel,
+  damit Überschrift und Text auf den About-Bildern gut lesbar bleiben.
+*/
+body.light-mode .about-panel__overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(23, 24, 22, 0.10) 0%,
+        rgba(23, 24, 22, 0.20) 45%,
+        rgba(23, 24, 22, 0.86) 100%
+    );
+}
+
+body.light-mode .about-panel:hover .about-panel__overlay,
+body.light-mode .about-panel.is-active .about-panel__overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(23, 24, 22, 0.06) 0%,
+        rgba(23, 24, 22, 0.08) 42%,
+        rgba(23, 24, 22, 0.78) 100%
+    );
+}
+/* About-Typografie bleibt über dem dunklen Bildverlauf hell */
+body.light-mode .about-panel,
+body.light-mode .about-panel__content {
+    color: var(--warm-white);
+}
+/*
+  Einzelne fest eingetragene helle Farben in der Historie:
+  Im Light Mode werden sie dunkel.
+*/
+body.light-mode .history-company,
+body.light-mode .history .section-label,
+body.light-mode .work .section-label,
+body.light-mode .about .section-label,
+body.light-mode .contact .section-label {
+    color: #50514c;
+}
+
+/* Trennlinien auf warmweißem Hintergrund */
+body.light-mode .history .section-label,
+body.light-mode .work .section-label,
+body.light-mode .about .section-label,
+body.light-mode .contact .section-label,
+body.light-mode .history-grid,
+body.light-mode .history-item,
+body.light-mode .connect-grid,
+body.light-mode .connect-item {
+    border-color: #c9c8c0;
+}
+
+/* ============ TOGGLE IM HEADER ============ */
+
+.theme-toggle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 25;
+
+    transform: translate(-50%, -50%);
+    display: block;
+
+    width: 74px;
+    height: 34px;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Checkbox bleibt funktional, aber unsichtbar */
+.theme-toggle input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+/*
+  Glasartige Schiene:
+  halbtransparent, weich, mit feiner Kontur.
+*/
+.theme-toggle__track {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid rgba(241, 240, 234, 0.35);
+    border-radius: 999px;
+
+    background: rgba(241, 240, 234, 0.1);
+    box-shadow:
+        inset 0 1px 0 rgba(241, 240, 234, 0.18),
+        0 5px 18px rgba(0, 0, 0, 0.14);
+
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    backdrop-filter: blur(12px) saturate(130%);
+
+    transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+/* Sonne und Mond */
+.theme-toggle__sun,
+.theme-toggle__moon {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+
+    transform: translateY(-50%);
+    font: 500 0.85rem/1 "DM Mono", monospace;
+
+    transition:
+        opacity 0.25s ease,
+        color 0.35s ease;
+}
+
+.theme-toggle__sun {
+    left: 10px;
+    opacity: 0.45;
+    color: var(--paper);
+}
+
+.theme-toggle__moon {
+    right: 11px;
+    opacity: 1;
+    color: var(--paper);
+}
+
+/*
+  Beweglicher, runder Glasschieber:
+  Im Dark Mode rechts beim Mond.
+*/
+.theme-toggle__thumb {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+    background: rgba(241, 240, 234, 0.9);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.22),
+        inset 0 1px 1px rgba(255, 255, 255, 0.75);
+
+    transition:
+        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+/*
+  Checkbox aktiviert = Light Mode:
+  Schieber wandert nach links zur Sonne.
+*/
+.theme-toggle input:checked + .theme-toggle__track {
+    border-color: rgba(23, 24, 22, 0.3);
+    background: rgba(23, 24, 22, 0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 5px 18px rgba(23, 24, 22, 0.12);
+}
+
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb {
+    transform: translateX(-40px);
+    background: var(--true-dark);
+    box-shadow:
+        0 2px 8px rgba(23, 24, 22, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__sun {
+    opacity: 1;
+    color: var(--true-dark);
+}
+
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__moon {
+    opacity: 0.4;
+    color: var(--true-dark);
+}
+
+/* Sichtbarer Fokus für Tastaturbedienung */
+.theme-toggle input:focus-visible + .theme-toggle__track {
+    outline: 2px solid var(--acid);
+    outline-offset: 4px;
+}
+
+/* Auf Mobilgeräten etwas kompakter */
+@media (max-width: 700px) {
+    .theme-toggle {
+        width: 64px;
+        height: 30px;
+    }
+
+    .theme-toggle__thumb {
+        width: 22px;
+        height: 22px;
+    }
+
+    .theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb {
+        transform: translateX(-34px);
+    }
+
+    .theme-toggle__sun {
+        left: 8px;
+    }
+
+    .theme-toggle__moon {
+        right: 9px;
+    }
+}
+/* Toggle nutzt ebenfalls den eigenen Cursor-Kreis */
+.theme-toggle,
+.theme-toggle *,
+.theme-toggle input,
+.theme-toggle__track {
+    cursor: none;
