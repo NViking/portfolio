@@ -562,152 +562,9 @@ body {
 
 /* ========== PROJEKTE ========== */
 
-/* Genug Platz vor und nach Projekten, damit auch erstes und letztes Projekt mittig einrasten können */
-.work {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-}
-.project:first-of-type {
-    scroll-margin-top: 20vh;
-}
-.project:last-of-type {
-    scroll-margin-bottom: 25vh;
-}
-.work .section-label {
-    border-color:#484944;
-    color:#bcbdb6
-}
-.project {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    margin: 0 0 14vh;
-}
-/* Letztes Projekt: deutlich weniger schwarzer Abstand nach unten */
-.project:last-child {
-    margin-bottom: 3vh;
-}
-.project:last-of-type {
-    scroll-margin-bottom: 5vh;
-}
-.project-visual {
-    height:min(54vw,620px);
-    position:relative;
-    overflow:hidden;
-    margin-bottom:17px
-}
-.project-info {
-    display:flex;
-    justify-content:space-between;
-    gap:2rem
-}
-.project-info h2 {
-    font-size:clamp(1.8rem,3.5vw,4rem);
-    line-height:.94;
-    letter-spacing:-.07em;
-    margin:0
-}
-.project-info div {
-    width:min(310px,36%);
-    font:.7rem/1.5 'DM Mono',monospace
-}
-.project-info p {
-    margin:0 0 7px
-}
-.visual-one {
-    background:#d9d4ca
-}
-.orb {
-    position:absolute;
-    width:45%;
-    aspect-ratio:1;
-    border-radius:50%;
-    background:#ff7044;
-    top:13%;
-    left:20%;
-    box-shadow:18vw 14vw 0 #3652ff;
-    transition:transform .7s cubic-bezier(.2,.8,.2,1)
-}
-.grid-lines {
-    position:absolute;
-    inset:0;
-    background:linear-gradient(90deg,transparent 49.7%,#222 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#222 50%,transparent 50.3%);
-    opacity:.8
-}
-.project:hover .orb {
-    transform:scale(1.15) rotate(15deg)
-}
-.project-visual b {
-    position:absolute;
-    right:2%;
-    bottom:1%;
-    font:500 7rem/.8 'DM Mono',monospace;
-    letter-spacing:-.1em;
-    opacity:.7
-}
-.visual-two {
-    background:var(--acid);
-    width:72%;
-    margin-left:auto
-}
-.bar {
-    position:absolute;
-    display:block;
-    background:var(--ink);
-    transition:transform .5s ease
-}
-.bar-a {
-    width:74%;
-    height:21%;
-    left:-3%;
-    top:18%;
-    transform:rotate(-17deg)
-}
-.bar-b {
-    width:60%;
-    height:22%;
-    right:-7%;
-    top:47%;
-    transform:rotate(21deg)
-}
-.bar-c {
-    width:48%;
-    height:15%;
-    left:10%;
-    bottom:-5%;
-    transform:rotate(-8deg)
-}
-.project:hover .bar-a {
-    transform:rotate(-8deg) translateX(5%)
-}
-.project:hover .bar-b {
-    transform:rotate(12deg) translateX(-7%)
-}
-.visual-three {
-    background:#716e62
-}
-.sun {
-    position:absolute;
-    width:36%;
-    aspect-ratio:1;
-    border-radius:50%;
-    background:var(--acid);
-    right:18%;
-    top:11%;
-    transition:transform .7s ease
-}
-.shape {
-    position:absolute;
-    left:11%;
-    bottom:-11%;
-    width:65%;
-    height:70%;
-    background:#eeebe3;
-    clip-path:polygon(0 100%,35% 0,67% 65%,100% 13%,100% 100%)
-}
-.project:hover .sun {
-    transform:translate(-30px,20px) scale(1.2)
-}
+
+
+
 
 
 /* ============ MEHR ÜBER MICH: INTERAKTIVE FENSTER ============ */
@@ -771,29 +628,20 @@ body {
     flex-grow: 0.8333;
 }
 
-.about-panels:has(.about-panel:hover) .about-panel:hover,
-.about-panels.has-active-panel .about-panel.is-active {
-    flex-grow: 1.5;
-}
-
-/* Bild füllt das Fenster ohne Verzerrung */
-.about-panel__image {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    /*
-      Normalzustand: alle Bilder ausgegraut und etwas gedämpft.
-    */
-    filter: grayscale(1) saturate(0) brightness(0.65) contrast(0.9);
-    transform: scale(1.04);
-
-    transition:
-        filter 0.55s ease,
-        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+.about-fold::before,
+.about-fold::after {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--about-line);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 650ms var(--ease-out), opacity 1ms linear 650ms;
 }
 
 /* Beim Hover wird nur das jeweilige Bild farbig und leicht größer */
@@ -1024,11 +872,6 @@ body {
     text-decoration: none;
 }
 
-/*
-  Hover-Balken:
-  --acid wächst vertikal aus der Mitte und liegt über
-  dem normalen weißen Text und dem normalen weißen Pfeil.
-*/
 .connect-item::before {
     content: "";
     position: absolute;
