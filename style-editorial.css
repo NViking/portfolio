@@ -1,631 +1,537 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap");
+
+/* =========================================================
+   2. ROOT
+   ========================================================= */
 :root {
-    --ink:#171816;
-    --paper:#f1f0ea;
-    --acid:#d3fdff;
-    --muted:#77766f;
-    --line:#c9c8c0
+  --ink: #171816;
+  --paper: #f1f0ea;
+  --acid: #d3fdff;
+  --muted: #77766f;
+  --line: #c9c8c0;
+  --dark-line: #484944;
+  --warm-white: #f1f0ea;
+  --true-dark: #171816;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-editorial: cubic-bezier(0.76, 0, 0.24, 1);
 }
-* {
-    box-sizing:border-box
-}
+
+/* =========================================================
+   3. HTML / RESET
+   ========================================================= */
+* { box-sizing: border-box; }
+
 html {
-    scroll-behavior: smooth;
-    /* Projekte rasten beim vertikalen Scrollen ein */
-    scroll-snap-type: y proximity;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-x: clip;
 }
-html::-webkit-scrollbar {
-    display: none;
-}
-/* Der Browser-Viewport wird zum Snap-Container */
-html,
+
+html::-webkit-scrollbar { display: none; }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+
+/* =========================================================
+   4. BODY
+   ========================================================= */
 body {
-    scroll-snap-type: y proximity;
-    scroll-padding-top: 0;
+  min-width: 320px;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "Manrope", Arial, sans-serif;
+  cursor: none;
 }
-body {
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:Manrope,Arial,sans-serif;
-    cursor:none
+
+/* =========================================================
+   5. BASIS / GEMEINSAME ELEMENTE
+   ========================================================= */
+.section { padding: 12vh 7vw; }
+
+.eyebrow,
+footer {
+  font: 400 0.65rem/1 "DM Mono", monospace;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
 }
-/* ============ HEADER: HELL AUF DUNKLEN BEREICHEN ============ */
+
+.section-label {
+  display: grid;
+  grid-template-columns: 0.1fr 4fr 0.25fr;
+  padding: 12px 0 2vh;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font: 200 2rem/1 "DM Mono", monospace;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.section-label > span:nth-child(2) {
+  min-width: 0;
+  text-align: left;
+  white-space: pre;
+}
+
+.section-label > span:nth-child(3) {
+  min-width: 0;
+  text-align: left;
+  white-space: pre;
+}
+
+.section-label[data-scroll-ready] .section-label__char {
+  display: inline-block;
+  opacity: var(--char-opacity);
+  transform: translateY(var(--char-translate));
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-label[data-scroll-ready] .section-label__char {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s var(--ease-out);
+}
+
+.reveal.in { opacity: 1; transform: none; }
+
+/* =========================================================
+   6. HEADER BIS FOOTER
+   ========================================================= */
+
+/* ---------- Header / Navigation ---------- */
 .site-header {
-    height: 78px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 3vw;
-    position: fixed;
-    inset: 0 0 auto;
-    z-index: 20;
-
-    /* Standard: Die Landingpage, Historie, Portfolio und About sind dunkel. Daher sind Monogramm und Menü standardmäßig hell. */
-    color: var(--paper);
-
-    mix-blend-mode: normal;
-    filter: none;
-
-    transition: color 0.15s ease;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 78px;
+  padding: 0 3vw;
+  color: var(--paper);
+  transition: color 0.15s ease;
 }
-.site-header {
-    color: var(--paper);
-}
-.site-header.on-light {
-    color: var(--ink);
-}
-/* Monogramm übernimmt immer die Headerfarbe */
+
+.site-header.on-light { color: var(--ink); }
+
 .brand {
-    color: inherit;
+  color: inherit;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  text-decoration: none;
+  transition: transform 0.3s ease, letter-spacing 0.3s ease;
 }
-/* Menü-Button und Linie übernehmen die Headerfarbe */
+
+.brand span { margin-left: 2px; font-size: 0.65rem; vertical-align: top; }
+.brand:hover { transform: translateY(-3px) rotate(-4deg) scale(1.08); letter-spacing: -0.04em; }
+
 .menu-toggle,
 .menu-close {
-    color: inherit;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: none;
+  font: 500 0.68rem/1 "DM Mono", monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
+
+.menu-toggle { transition: transform 0.3s ease, letter-spacing 0.3s ease; }
+.menu-toggle:hover { transform: translateY(-3px) rotate(4deg) scale(1.08); letter-spacing: 0.04em; }
 .menu-toggle span {
-    border-top-color: currentColor;
+  display: inline-block;
+  width: 25px;
+  margin: 0 0 3px 9px;
+  border-top: 1px solid currentColor;
+  transition: width 0.3s ease, transform 0.3s ease;
 }
+.menu-toggle:hover span { width: 34px; transform: translateX(4px); }
 
-.brand {
-    font-size:1.15rem;
-    font-weight:800;
-    letter-spacing:-.08em;
-    color:inherit;
-    text-decoration:none
-}
-.brand span {
-    font-size:.65rem;
-    vertical-align:top;
-    margin-left:2px
-}
-.brand {
-    transition: transform 0.3s ease, letter-spacing 0.3s ease;
-}
-
-.brand:hover {
-    transform: translateY(-3px) rotate(-4deg) scale(1.08);
-    letter-spacing: -0.04em;
-}
-/* Menü oben rechts: dezente Bewegung als Klick-Hinweis */
-.menu-toggle {
-    transition: transform 0.3s ease, letter-spacing 0.3s ease;
-}
-
-.menu-toggle:hover {
-    transform: translateY(-3px) rotate(4deg) scale(1.08);
-    letter-spacing: 0.04em;
-}
-
-/* Die kleine Linie neben „Menü“ bewegt sich leicht mit */
-.menu-toggle span {
-    transition: width 0.3s ease, transform 0.3s ease;
-}
-
-.menu-toggle:hover span {
-    width: 34px;
-    transform: translateX(4px);
-}
-/* Monogramm: dezente Bewegung als Hinweis auf Klickbarkeit */
-
-.menu-toggle,.menu-close {
-    border:0;
-    background:none;
-    color:inherit;
-    font:500 .68rem/1 'DM Mono',monospace;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    cursor:pointer
-}
-.menu-toggle span {
-    display:inline-block;
-    width:25px;
-    border-top:1px solid;
-    margin:0 0 3px 9px
-}
 .menu {
-    position:fixed;
-    inset:0;
-    background:var(--ink);
-    color:var(--paper);
-    z-index:30;
-    transform:translateY(-101%);
-    transition:transform .65s cubic-bezier(.76,0,.24,1);
-    padding:2.5vw 3vw;
-    display:flex;
-    flex-direction:column
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5vw 3vw;
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-101%);
+  transition: transform 0.65s var(--ease-editorial);
 }
-.menu.open {
-    transform:translateY(0)
-}
-.menu-top {
-    display:flex;
-    justify-content:space-between;
-    font:400 .68rem 'DM Mono',monospace;
-    text-transform:uppercase
-}
-.menu nav {
-    margin:auto 0
-}
-.menu nav a {
-    display:block;
-    color:inherit;
-    text-decoration:none;
-    border-top:1px solid #4d4e48;
-    padding:1.2vh 0;
-    font-size:clamp(2.7rem,8vw,7rem);
-    letter-spacing:-.08em;
-    line-height:1
-}
-.menu nav a small {
-    font:400 .65rem 'DM Mono',monospace;
-    vertical-align:middle;
-    margin-right:1rem
-}
-.menu nav a:hover {
-    color:var(--acid)
-}
-.menu-links {
-    display:flex;
-    gap:2rem;
-    font:.7rem 'DM Mono',monospace
-}
-.menu-links a {
-    color:inherit
-}
-.progress {
-    position:fixed;
-    right:16px;
-    top:110px;
-    z-index:19;
-    width:1px;
-    height:100px;
-    background:#bab9b1
-}
-.progress span {
-    display:block;
-    width:100%;
-    height:0;
-    background:var(--ink)
-}
-.cursor-dot {
-    position: fixed;
-    z-index: 100;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+.menu.open { transform: translateY(0); }
+.menu-top { display: flex; justify-content: space-between; font: 400 0.68rem "DM Mono", monospace; text-transform: uppercase; }
+.menu nav { margin: auto 0; }
+.menu nav a { display: block; padding: 1.2vh 0; border-top: 1px solid #4d4e48; color: inherit; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 600; letter-spacing: -0.08em; line-height: 1; text-decoration: none; }
+.menu nav a:hover { color: var(--acid); }
+.menu nav a small { margin-right: 1rem; font: 400 0.65rem "DM Mono", monospace; vertical-align: middle; }
+.menu-links { display: flex; gap: 2rem; font: 0.7rem "DM Mono", monospace; }
 
-    /* Grundfarbe für den Kontrast-Effekt */
-    background: #ffffff;
+.progress { position: fixed; top: 110px; right: 16px; z-index: 19; width: 1px; height: 100px; background: #bab9b1; }
+.progress span { display: block; width: 100%; height: 0; background: var(--paper); }
 
-    /*Cursor wechselt abhängig vom Untergrund: hell auf dunkel, dunkel auf hell.*/
-    mix-blend-mode: difference;
-
-    /*
-      Entfernt farbige Mischfarben: Ergebnis wird praktisch nur Schwarz oder Weiß.*/
-    -webkit-backdrop-filter: grayscale(1) contrast(100);
-    backdrop-filter: grayscale(1) contrast(100);
-
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition:
-        width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-        height 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-        background 0.22s ease,
-        opacity 0.18s ease,
-        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Auf klickbaren Elementen wird nur das Element selbst hervorgehoben. Der eigene Cursor wird dabei unsichtbar. */
-.cursor-dot.hover {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-}
-
-/* ============ LANDINGPAGE / HERO ============ */
+/* ---------- Hero ---------- */
 .hero {
-    min-height: 100svh;
-    padding: 24vh 7vw 5vh;
-    display: flex;
-    flex-direction: column;
-
-    /* Gleicher Hintergrund wie Historie, Portfolio und About */
-    background: var(--ink);
-    color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding: 24vh 7vw 5vh;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
 }
-/* Dezente helle Sekundärtexte im dunklen Hero */
-.hero .eyebrow,
-.hero .scroll-hint {
-    color: #bcbdb6;
-}
-/* Titel und Fließtext hell */
-.hero-title,
-.hero-meta {
-    color: var(--paper);
-}
-.eyebrow,.section-label,footer {
-    font:400 .65rem 'DM Mono',monospace;
-    text-transform:uppercase;
-    letter-spacing:.035em
-}
-.hero-title {
-    font-size:clamp(3.7rem,8.3vw,9.5rem);
-    line-height:.99;
-    letter-spacing:-.08em;
-    font-weight:600;
-    margin:4.5vh 0 auto;
-    max-width: min(1180px, 100%);
-}
-/* ============ HERO: GEHEIMER TEXT IM ACID-MAUSKREIS ============ */
-
-/*
-  hero-title ist jetzt der gemeinsame Container für:
-  - hero-title-main: sichtbarer Ausgangstext
-  - hero-title-secret: Text innerhalb des Acid-Kreises */
-.hero-title {
-    position: relative;
-    isolation: isolate;
-}
-
-/* Der normale Text behält exakt die bisherige Darstellung */
-.hero-title-main {
-    position: relative;
-    z-index: 1;
-
-    margin: 0;
-    font: inherit;
-}
-
-/* Beide Textebenen erhalten identische Zeilenformatierung */
-.hero-title-main .line,
-.hero-title-secret .line {
-    display: block;
-}
-
+.hero .eyebrow, .hero .scroll-hint { color: #bcbdb6; }
+.hero-title { position: relative; isolation: isolate; max-width: min(1180px, 100%); margin: 4.5vh 0 auto; font-size: clamp(3.7rem, 8.3vw, 9.5rem); font-weight: 600; letter-spacing: -0.08em; line-height: 0.99; }
+.hero-title-main { position: relative; z-index: 1; margin: 0; font: inherit; }
+.hero-title .line, .hero-title-secret .line { display: block; }
+.hero-title em, .about-copy em { font-family: "Playfair Display", serif; font-weight: 500; letter-spacing: -0.08em; }
 .hero-title-secret {
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-    --reveal-size: 0px;
+  --mouse-x: 50%; --mouse-y: 50%; --reveal-size: 0px; --reveal-space: 220px;
+  position: absolute; z-index: 2; inset: calc(-1 * var(--reveal-space)); padding: var(--reveal-space);
+  pointer-events: none; color: var(--true-dark); background: var(--acid);
+  clip-path: circle(var(--reveal-size) at calc(var(--mouse-x) + var(--reveal-space)) calc(var(--mouse-y) + var(--reveal-space)));
+}
+.hero-actions { display: flex; align-items: center; gap: 9px; margin-top: 5vh; }
+.hero-icon, .resume-cta { display: inline-flex; align-items: center; justify-content: center; height: 48px; border: 1px solid var(--paper); color: var(--paper); text-decoration: none; transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+.hero-icon { width: 48px; border-radius: 50%; }
+.hero-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.hero-icon:hover, .resume-cta:hover { background: var(--paper); color: var(--ink); transform: scale(1.12); box-shadow: 0 0 0 4px var(--acid); }
+.hero-meta { align-self: flex-end; display: flex; gap: 1rem; align-items: end; width: min(350px, 100%); font-size: 0.78rem; line-height: 1.45; }
+.scroll-hint { margin-top: auto; font: 0.63rem "DM Mono", monospace; text-transform: uppercase; }
+.scroll-hint span { display: inline-block; margin-left: 5px; animation: bob 1.8s infinite; }
+@keyframes bob { 50% { transform: translateY(6px); } }
 
-    /*Der Kreis darf 220px über die Textbox hinausreichen. Der Text beginnt durch das gleich große Padding trotzdem exakt an der gleichen Stelle wie der normale Hero-Text.*/
-    --reveal-space: 220px;
+/* ---------- Historie ---------- */
+.history, .work, .contact { background: var(--ink); color: var(--paper); }
+.history { padding-bottom: 0; }
+.history .section-label, .work .section-label, .contact .section-label, .about .section-label { border-color: var(--paper); color: var(--paper); }
+.history-grid, .connect-grid { margin-top: 7vh; border-top: 1px solid var(--dark-line); }
+.history-item { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(120px, 22%) 1fr; gap: 2rem; min-height: 180px; padding: 2rem clamp(1.25rem, 3vw, 3.5rem); overflow: hidden; border-bottom: 1px solid var(--dark-line); }
+.history-item::before { content: ""; position: absolute; z-index: 1; inset: 0; background: var(--acid); transform: scaleY(0); transform-origin: center; transition: transform 0.25s var(--ease-editorial); }
+.history-item:hover::before { transform: scaleY(1); }
+.history-year, .history-default { position: relative; z-index: 0; }
+.history-year, .history-role, .history-hover { font-size: clamp(1.8rem, 3vw, 3.5rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.15; }
+.history-content { display: grid; align-items: center; }
+.history-default, .history-hover { grid-area: 1 / 1; }
+.history-default { display: flex; flex-direction: column; gap: 0.35rem; }
+.history-company { color: #bcbdb6; font-size: 1rem; }
+.history-hover { position: relative; z-index: 2; color: var(--true-dark); clip-path: inset(50% 0); transition: clip-path 0.25s var(--ease-editorial); }
+.history-item:hover .history-hover { clip-path: inset(0); }
+.history-fill { --fill: 0; color: transparent; background: linear-gradient(90deg, var(--paper) 0%, var(--paper) calc(var(--fill) * 1%), #666761 calc(var(--fill) * 1%), #666761 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    position: absolute;
-    z-index: 2;
-
-    top: calc(-1 * var(--reveal-space));
-    right: calc(-1 * var(--reveal-space));
-    bottom: calc(-1 * var(--reveal-space));
-    left: calc(-1 * var(--reveal-space));
-
-    padding: var(--reveal-space);
-    display: block;
-    pointer-events: none;
-
-    color: var(--ink);
-    background: var(--acid);
-
-    /* Mauskoordinaten werden um den zusätzlichen Außenraum korrigiert. So bleibt der Mittelpunkt exakt unter der Maus. */
-    -webkit-clip-path: circle(
-        var(--reveal-size)
-        at calc(var(--mouse-x) + var(--reveal-space))
-        calc(var(--mouse-y) + var(--reveal-space))
-    );
-    clip-path: circle(
-        var(--reveal-size)
-        at calc(var(--mouse-x) + var(--reveal-space))
-        calc(var(--mouse-y) + var(--reveal-space))
-    );
-
-    /* Keine Transition: Der Kreis sitzt ohne Verzögerung direkt an der Maus. */
-    transition: none
-}
-
-/* Während der große Acid-Kreis aktiv ist, verschwindet der kleine Standard-Cursorpunkt.*/
-.cursor-dot.hero-text-hover {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-}
-.hero-title .line {
-    display:block
-}
-.hero-title em,.about-copy em {
-    font-family:'Playfair Display',serif;
-    font-weight:500;
-    letter-spacing:-.08em
-}
-.hero-actions {
-    display:flex;
-    align-items:center;
-    gap:9px;
-    margin-top:5vh
-}
-/* Hero-Icons: hell auf dunkler Landingpage */
-.hero-icon,
-.resume-cta {
-    height: 48px;
-    border: 1px solid var(--paper);
-    color: var(--paper);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-
-    transition:
-        color 0.25s ease,
-        background 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-.hero-icon {
-    width:48px;
-    border-radius:50%
-}
-.hero-icon svg {
-    height:20px;
-    width:20px;
-    fill:currentColor
-}
-.resume-cta {
-    padding:0 19px;
-    margin-left:9px;
-    border-radius:24px;
-    font:500 .67rem 'DM Mono',monospace;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    gap:10px
-}
-.resume-cta span {
-    font-size:1rem
-}
-/* Hover: hell gefüllt, Icon und Text dunkel */
-.hero-icon:hover,
-.resume-cta:hover {
-    background: var(--paper);
-    color: var(--ink);
-    transform: scale(1.12);
-    box-shadow: 0 0 0 4px var(--acid);
-}
-.hero-meta {
-    align-self:flex-end;
-    width:min(350px,100%);
-    display:flex;
-    gap:1rem;
-    align-items:end;
-    line-height:1.45;
-    font-size:.78rem
-}
-.scroll-hint {
-    font:.63rem 'DM Mono',monospace;
-    text-transform:uppercase;
-    margin-top:auto
-}
-.scroll-hint span {
-    display:inline-block;
-    margin-left:5px;
-    animation:bob 1.8s infinite
-}
-@keyframes bob {
-    50% {
-        transform:translateY(6px)
-    }
-}
-.section {
-    padding:12vh 7vw
-}
-.section-label {
-    display:grid;
-    grid-template-columns:1fr 4fr 1fr;
-    border-top:1px solid var(--line);
-    padding:12px 0 7vh;
-    color:var(--ink);
-}
-.section-label span:last-child {
-    text-align:right
-}
-
-/* ============ HISTORIE ============ */
-.history {
-    background: var(--ink);
-    color: var(--paper);
-    padding-bottom: 0;
-}
-
-.history .section-label {
-    border-color: #484944;
-    color: #bcbdb6;
-}
-
-/* Gesamtcontainer mit oberer Trennlinie */
-.history-grid {
-    margin-top: 7vh;
-    border-top: 1px solid #484944;
-}
-
-/* Eine Station: Jahr links, berufliche Information rechts */
-.history-item {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-columns: minmax(120px, 22%) 1fr;
-    gap: 2rem;
-
-    min-height: 180px;
-    padding: 2rem clamp(1.25rem, 3vw, 3.5rem);
-
-    border-bottom: 1px solid #484944;
-    overflow: hidden;
-}
-
-/* Heller Balken startet in der Mitte. Er liegt über den normalen Inhalten und wächst nach oben/unten.*/
-.history-item::before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-
-    background: var(--acid);
-
-    transform: scaleY(0);
-    transform-origin: center;
-    transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
-}
-.history-item:hover::before {
-    transform: scaleY(1);
-}
-/* Jahr bleibt unter dem Hover-Balken und wird dadurch überdeckt */
-.history-year {
-    position: relative;
-    z-index: 0;
-
-    font-size: clamp(1.8rem, 3vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 1.15;
-    padding-bottom: 0.12em;
-}
-/* Normaler Inhalt */
-.history-content {
-    display: grid;
-    align-items: center;
-}
-.history-default {
-    position: relative;
-    z-index: 0;
-    grid-area: 1 / 1;
-
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-/* Positionsbezeichnung */
-.history-role {
-    font-size: clamp(1.8rem, 3vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 1.15;
-    padding-bottom: 0.12em;
-}
-/* Unternehmen */
-.history-company {
-    color: #bcbdb6;
-    font-size: 1rem;
-}
-/* Alternativer Text liegt über dem Balken. Er wird mit derselben Mitte-nach-außen-Bewegung freigelegt.*/
-.history-hover {
-    position: relative;
-    z-index: 2;
-    grid-area: 1 / 1;
-
-    color: var(--ink);
-    font-size: clamp(1.8rem, 3vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 1.15;
-    padding-bottom: 0.12em;
-
-    -webkit-clip-path: inset(50% 0 50% 0);
-    clip-path: inset(50% 0 50% 0);
-
-    transition: clip-path 0.25s cubic-bezier(0.76, 0, 0.24, 1);
-}
-.history-item:hover .history-hover {
-    -webkit-clip-path: inset(0 0 0 0);
-    clip-path: inset(0 0 0 0);
-}
-/* Tablet und Smartphone */
-@media (max-width: 700px) {
-    .history-grid {
-        margin-top: 5vh;
-    }
-    .history-item {
-        grid-template-columns: 75px 1fr;
-        gap: 1rem;
-        min-height: 135px;
-        padding: 1.5rem 1.25rem;
-    }
-    .history-year,
-    .history-role,
-    .history-hover {
-        font-size: clamp(1.3rem, 6vw, 2rem);
-    }
-    .history-company {
-        font-size: 0.8rem;
-    }
-}
+/* ---------- Über mich ---------- */
 .work {
-    background:var(--ink);
-    color:var(--paper)
+  overflow: hidden;
+  color: var(--paper);
+  padding-bottom: clamp(2.5rem, 5vh, 4rem);
 }
 
-/* ========== PROJEKTE ========== */
+.work-collage {
+  display: grid;
+  grid-template-columns: 1fr 1.45fr 1.45fr;
+  grid-template-rows: 0.9fr 1.2fr 1.3fr;  gap: 10px;
+  width: min(100%, 1180px);
+  height: min(73svh, 720px);
+  margin: 7vh 0 0;
+  margin-inline: auto;
+}
 
+.work-card {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 0;
+  perspective: 1400px;
+}
 
+.work-card::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: -1px;
+  border: 1px solid var(--acid);
+  border-radius: var(--radius);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--acid) 60%, transparent),
+    0 0 22px color-mix(in srgb, var(--acid) 32%, transparent);
+  transition: opacity 180ms ease;
+}
 
+.work-card:hover::after {
+  opacity: 1;
+}
 
+.work-card--branding {
+  grid-row: span 2;
+}
 
+.work-card--identity {
+  grid-column: 2;
+}
 
-/* ============ MEHR ÜBER MICH: INTERAKTIVE FENSTER ============ */
+.work-card--strategy {
+  grid-column: 3;
+  grid-row: span 2;
+}
 
+.work-card--web {
+  grid-column: 2;
+}
+
+.work-card--social {
+  grid-column: 1 / span 2;
+}
+
+.work-card--print {
+  grid-column: 3;
+}
+
+.work-card__button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: inherit;
+  cursor: none;
+  perspective: inherit;
+}
+
+.work-card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 720ms var(--ease-editorial);
+}
+
+.work-card.is-flipped .work-card__inner {
+  transform: rotate3d(1, 1, 0, 180deg);
+}
+
+.work-card__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  border: 1px solid var(--dark-line);
+  border-radius: var(--radius);
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.work-card__front {
+  justify-content: center;
+  padding: clamp(1.1rem, 2vw, 2rem);
+  background: var(--true-dark);
+}
+
+.work-card__back {
+  justify-content: space-between;
+  padding: clamp(1.1rem, 2vw, 2rem);
+  background: var(--surface-dark, #1d1d1a);
+  transform: rotate3d(1, 1, 0, 180deg);
+}
+
+.work-card__index {
+  font: 500 clamp(0.62rem, 0.8vw, 0.78rem) / 1 var(--font-mono);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.work-card__index {
+  position: absolute;
+  top: clamp(1.1rem, 2vw, 2rem);
+  left: clamp(1.1rem, 2vw, 2rem);
+  color: var(--muted);
+}
+
+.work-card__hint {
+  position: absolute;
+  right: clamp(1.1rem, 2vw, 2rem);
+  bottom: clamp(1.1rem, 2vw, 2rem);
+  color: var(--acid);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.work-card:hover .work-card__hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.work-card__title {
+  max-width: 9ch;
+  font-size: clamp(1.3rem, 2.3vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.085em;
+  line-height: 0.88;
+  text-align: left;
+}
+
+.work-card--identity .work-card__title,
+.work-card--social .work-card__title,
+.work-card--print .work-card__title {
+  max-width: 15ch;
+}
+
+.work-card__detail-title {
+  max-width: 18ch;
+  margin-top: auto;
+  font-size: clamp(1.15rem, 1.8vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  line-height: 0.9;
+  text-align: left;
+}
+
+.work-card__copy {
+  max-width: 65ch;
+  margin: 1rem 0 auto;
+  color: var(--muted);
+  font: 400 clamp(0.66rem, 0.82vw, 0.88rem) / 1.5 var(--font-mono);
+  letter-spacing: -0.045em;
+  text-align: left;
+}
+
+.work-card__button:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 5px;
+}
+
+@media (max-width: 760px) {
+  .work .section-label {
+    margin-inline: 6vw;
+  }
+
+  .work-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .work-collage {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, minmax(160px, 1fr));
+    height: auto;
+    min-height: 800px;
+  }
+
+  .work-card--branding,
+  .work-card--strategy {
+    grid-column: auto;
+    grid-row: span 2;
+  }
+
+  .work-card--identity,
+  .work-card--web,
+  .work-card--social,
+  .work-card--print {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .work-collage {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    height: auto;
+    min-height: 0;
+  }
+
+  .work-card,
+  .work-card--branding,
+  .work-card--strategy {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 210px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card__inner,
+  .work-card::after,
+  .work-card__hint {
+    transition: none;
+  }
+}
+/* ---------- Ausgewählte Projekte ---------- */
 .about {
-    min-height: 100svh;
-    overflow: hidden;
-}
-/* About-Bereich: gleicher dunkler Hintergrund wie Portfolio */
-.about {
-    background: var(--ink);
-    color: var(--paper);
+  --about-line: var(--paper);
+  min-height: 70svh;
+  overflow: hidden;
+  background: var(--about-bg);
+  color: var(--about-fg);
 }
 
-/* Label und Trennlinie für dunklen Hintergrund lesbar machen */
-.about .section-label {
-    border-color: #484944;
-    color: #bcbdb6;
-}
-/*
-  Vier gleich breite Fenster.
-  Die negative Margin gleicht das Standard-Section-Padding aus,
-  damit die Fläche über die gesamte Browserbreite reichen kann.
-*/
-.about-panels {
-    display: flex;
-    width: calc(100% + 14vw);
-    min-height: min(72svh, 780px);
-    margin: 7vh -7vw 0;
-    overflow: hidden;
-    background: var(--ink);
+.about-folds {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: calc(100%+7vw);
+  min-height: min(60svh, 620px);
+  margin: 7vh -4.22vw 0;
+  overflow: hidden;
+  background: var(--about-bg);
 }
 
-/* Ein Fenster im Normalzustand */
-.about-panel {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-
-    flex: 1 1 0;
-    min-width: 0;
-
-    cursor: none;
-    color: var(--paper);
-
-    transition:
-        flex-grow 0.55s cubic-bezier(0.76, 0, 0.24, 1),
-        filter 0.55s ease;
+.about-folds::before,
+.about-folds::after {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--about-line);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease 260ms;
 }
 
-/*
-  Das aktive Fenster wird maximal 1,5-mal so breit
-  wie eines der vier Ausgangsfenster.
+.about-folds::before {
+  top: 0;
+}
 
-  Rechnung:
-  aktiv = flex-grow: 1.5
-  übrige = flex-grow: 0.8333
-*/
-.about-panels:has(.about-panel:hover) .about-panel,
-.about-panels.has-active-panel .about-panel {
-    flex-grow: 0.8333;
+.about-folds::after {
+  bottom: 0;
+}
+
+.about-fold {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: min(60svh, 620px);
+  overflow: hidden;
+  border-right: 1px solid var(--about-line);
+  color: var(--about-fg);
+  cursor: none;
+  transition: flex-grow 650ms var(--ease-out);
+}
+
+.about-fold:first-child {
+  border-left: 1px solid var(--about-line);
 }
 
 .about-fold::before,
@@ -644,754 +550,375 @@ body {
   transition: transform 650ms var(--ease-out), opacity 1ms linear 650ms;
 }
 
-/* Beim Hover wird nur das jeweilige Bild farbig und leicht größer */
-.about-panel:hover .about-panel__image,
-.about-panel.is-active .about-panel__image {
-    filter: grayscale(0) saturate(1) brightness(0.9) contrast(1);
-    transform: scale(1.1);
+.about-fold::before {
+  top: 0;
 }
 
-/*
-  Dunkler Verlauf für lesbare Typografie.
-  Im Hover wird der Verlauf etwas transparenter,
-  damit das Bild stärker sichtbar wird.
-*/
-.about-panel__overlay {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-
-    background: linear-gradient(
-        180deg,
-        rgba(23, 24, 22, 0.1) 0%,
-        rgba(23, 24, 22, 0.2) 45%,
-        rgba(23, 24, 22, 0.86) 100%
-    );
-
-    transition: background 0.55s ease;
+.about-fold::after {
+  bottom: 0;
 }
 
-.about-panel:hover .about-panel__overlay,
-.about-panel.is-active .about-panel__overlay {
-    background: linear-gradient(
-        180deg,
-        rgba(23, 24, 22, 0.06) 0%,
-        rgba(23, 24, 22, 0.08) 42%,
-        rgba(23, 24, 22, 0.78) 100%
-    );
+.about-fold:hover::before,
+.about-fold:hover::after,
+.about-fold.is-active::before,
+.about-fold.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+  transition: transform 650ms var(--ease-out), opacity 1ms linear;
 }
 
-/*
-  Die Überschriften sitzen im Ausgangszustand
-  im oberen/mittleren Bereich des jeweiligen Fensters.
-*/
-.about-panel__content {
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    flex-direction: column;
-
-    height: 100%;
-    padding: clamp(1.5rem, 3vw, 3.5rem);
-
-    color: var(--paper);
+.about-folds:has(.about-fold:hover) .about-fold,
+.about-folds.is-open .about-fold {
+  flex-grow: 1;
 }
 
-/* Überschrift */
-.about-panel__content h3 {
-    margin: 22vh 0 0;
-
-    font-size: clamp(1.8rem, 3.4vw, 4.2rem);
-    font-weight: 600;
-    line-height: 0.9;
-    letter-spacing: -0.07em;
-
-    transition:
-        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        letter-spacing 0.55s ease;
+.about-folds:has(.about-fold:hover) .about-fold:hover,
+.about-folds.is-open .about-fold.is-active {
+  flex-grow: 2.5;
 }
 
-/*
-  Der Beschreibungstext ist zunächst verborgen.
-  Beim Hover erscheint er mit deutlich Abstand
-  unterhalb der Überschrift.
-*/
-.about-panel__content p {
-    max-width: 28ch;
-    margin: clamp(3rem, 8vh, 6.5rem) 0 0;
-
-    font: 400 clamp(0.78rem, 1vw, 0.95rem) / 1.6
-        "DM Mono", monospace;
-
-    opacity: 0;
-    transform: translateY(16px);
-
-    transition:
-        opacity 0.3s ease,
-        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+.about-fold__closed {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: clamp(1rem, 2.2vw, 2.2rem) clamp(0.75rem, 1.25vw, 1.5rem);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 150ms ease, visibility 0s linear;
 }
 
-/* Text wird beim aktiven Fenster sichtbar */
-.about-panel:hover .about-panel__content p,
-.about-panel.is-active .about-panel__content p {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.13s;
+.about-fold__number {
+  display: block;
+  font: 500 clamp(0.62rem, 0.85vw, 0.82rem) / 1 "DM Mono", monospace;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
 }
 
-/*
-  Ausrichtung der linken Spalte:
-  Überschrift und Beschreibung linksbündig.
-*/
-.about-panel--left .about-panel__content {
-    align-items: flex-start;
-    text-align: left;
+.about-fold__title {
+  --title-safe-space: clamp(0.45rem, 0.8vw, 1rem);
+  max-inline-size: calc(100% - var(--title-safe-space));
+  margin: clamp(3.8rem, 8vh, 7rem) 0 0;
+  font-size: clamp(1.2rem, 2vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
-/* Beide mittleren Spalten: mittig */
-.about-panel--center .about-panel__content {
-    align-items: center;
-    text-align: center;
+.about-fold:hover .about-fold__closed,
+.about-fold.is-active .about-fold__closed {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0s, 150ms;
 }
 
-.about-panel--center .about-panel__content p {
-    text-align: center;
+.about-fold__open {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: space-between;
+  row-gap: clamp(1rem, 2vh, 2rem);
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  padding: clamp(1.2rem, 2vw, 2.5rem);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 180ms ease-out, transform 320ms var(--ease-out), visibility 0s linear 320ms;
 }
 
-/*
-  Rechte Spalte:
-  Überschrift und Beschreibung rechtsbündig.
-*/
-.about-panel--right .about-panel__content {
-    align-items: flex-end;
-    text-align: right;
+.about-fold:hover .about-fold__open,
+.about-fold.is-active .about-fold__open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 220ms ease-out 110ms, transform 460ms var(--ease-out) 110ms, visibility 0s linear;
 }
 
-.about-panel--right .about-panel__content p {
-    text-align: right;
+.about-fold__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-/* Sichtbarer Fokus beim Navigieren mit Tab */
-.about-panel:focus-visible {
-    outline: 2px solid var(--paper);
-    outline-offset: -7px;
+.about-fold__eyebrow {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-align: right;
+  white-space: nowrap;
 }
 
-/* ============ MOBIL: Fenster untereinander ============ */
-@media (max-width: 700px) {
-    .about-panels {
-        flex-direction: column;
-        width: calc(100% + 12vw);
-        min-height: auto;
-        margin: 5vh -6vw 0;
-    }
-
-    .about-panel {
-        min-height: 52svh;
-        flex: none;
-    }
-
-    /*
-      Auf Mobilgeräten keine Breitenanimation:
-      Das aktive Fenster wird stattdessen etwas höher.
-    */
-    .about-panels:has(.about-panel:hover) .about-panel,
-    .about-panels.has-active-panel .about-panel,
-    .about-panels:has(.about-panel:hover) .about-panel:hover,
-    .about-panels.has-active-panel .about-panel.is-active {
-        flex-grow: 0;
-    }
-
-    .about-panel__content h3 {
-        margin-top: 12vh;
-    }
-
-    .about-panel__content p {
-        margin-top: 3.5rem;
-    }
+.about-fold__layout {
+  display: grid;
+  grid-template-columns: minmax(145px, 0.95fr) minmax(160px, 1fr);
+  align-items: start;
+  gap: clamp(1.25rem, 2.7vw, 3.4rem);
 }
 
-/* ============ HISTORIE: Scroll-Fill für bestehende Stationen ============ */
-
-.history-fill {
-    --fill: 0;
-
-    /* Anfang: gedämpftes Grau. Beim Scrollen füllt sich der vorhandene Text von links nach rechts weiß.*/
-    color: transparent;
-    background: linear-gradient(
-        90deg,
-        var(--paper) 0%,
-        var(--paper) calc(var(--fill) * 1%),
-        #666761 calc(var(--fill) * 1%),
-        #666761 100%
-    );
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    -webkit-text-fill-color: transparent;
+.about-fold__services {
+  display: grid;
+  align-content: start;
+  gap: 0.42rem;
+  padding-top: clamp(0.5rem, 2.5vh, 2.3rem);
+  font-size: clamp(1rem, 1.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  white-space: nowrap;
 }
 
-/* ============ KONTAKT / CONNECT ============ */
+.about-fold__image {
+  width: 100%;
+  height: clamp(120px, 22vh, 290px);
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.94);
+  transition: opacity 180ms ease-out, transform 380ms var(--ease-out);
+}
+
+.about-fold__copy {
+  max-width: 65ch;
+  margin: 0;
+  font: 400 clamp(0.9rem, 1.1vw, 1.3rem) / 1.42 "DM Mono", monospace;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 160ms ease-out, transform 300ms var(--ease-out);
+}
+
+.about-fold:hover .about-fold__image,
+.about-fold.is-active .about-fold__image {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 240ms ease-out 150ms, transform 580ms var(--ease-out) 150ms;
+}
+
+.about-fold:hover .about-fold__copy,
+.about-fold.is-active .about-fold__copy {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease-out 210ms, transform 460ms var(--ease-out) 210ms;
+}
+
+.about-fold:focus-visible {
+  outline: 3px solid var(--acid);
+  outline-offset: -5px;
+}
+/* ---------- Kontakt ---------- */
 .contact {
-    background: var(--ink);
-    color: var(--paper);
-    min-height: 100vh;
-    padding-bottom: 0;
-}
-/* Label auf dunklem Hintergrund */
-.contact .section-label {
-    border-color: #484944;
-    color: #bcbdb6;
-}
-/* Trennlinie oberhalb der Link-Flächen */
-.connect-grid {
-    margin-top: 7vh;
-    border-top: 1px solid #484944;
+  min-height: 100svh;
+  padding-bottom: 0;
 }
 
-/* Einzelne Link-Fläche */
 .connect-item {
-    position: relative;
-    isolation: isolate;
-
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 2rem;
-
-    min-height: 145px;
-    padding: 1.4rem clamp(1.25rem, 3vw, 3.5rem);
-
-    border-bottom: 1px solid #484944;
-    overflow: hidden;
-
-    /* Normaler Linktext: hell auf dunklem Hintergrund */
-    color: var(--paper);
-    text-decoration: none;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  min-height: 145px;
+  padding: 1.4rem clamp(1.25rem, 3vw, 3.5rem);
+  overflow: hidden;
+  border-bottom: 1px solid var(--dark-line);
+  color: var(--paper);
+  text-decoration: none;
 }
 
 .connect-item::before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-
-    background: var(--acid);
-
-    transform: scaleY(0);
-    transform-origin: center;
-    transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--acid);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.25s var(--ease-editorial);
 }
 
 .connect-item:hover::before {
-    transform: scaleY(1);
+  transform: scaleY(1);
 }
 
-/* Textcontainer für Normaltext und geheimen Text */
 .connect-content {
-    display: grid;
-    align-items: center;
-    min-width: 0;
+  display: grid;
+  min-width: 0;
 }
 
-/*
-  Normaler Text:
-  Er ist immer sichtbar, wird beim Hover aber physisch
-  vom Acid-Balken überdeckt.
-*/
-.connect-name {
-    grid-area: 1 / 1;
-    position: relative;
-    z-index: 0;
-
-    color: var(--paper);
-    font-size: clamp(2.5rem, 5.5vw, 6.4rem);
-    font-weight: 600;
-    letter-spacing: -0.06em;
-    line-height: 0.85;
-}
-/*
-  Geheimer Text:
-  Liegt über dem Acid-Balken und wird aus der Mitte sichtbar.
-*/
+.connect-name,
 .connect-description {
-    grid-area: 1 / 1;
-    position: relative;
-    z-index: 2;
-
-    color: var(--ink);
-    font-size: clamp(2.5rem, 5.5vw, 6.4rem);
-    font-weight: 600;
-    letter-spacing: -0.06em;
-    line-height: 0.85;
-
-    -webkit-clip-path: inset(50% 0 50% 0);
-    clip-path: inset(50% 0 50% 0);
-
-    transition: clip-path 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+  grid-area: 1 / 1;
+  font-size: clamp(2.5rem, 5.5vw, 6.4rem);
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
 }
+
+.connect-name {
+  position: relative;
+  z-index: 0;
+  color: var(--paper);
+}
+
+.connect-description {
+  position: relative;
+  z-index: 2;
+  color: var(--true-dark);
+  clip-path: inset(50% 0);
+  transition: clip-path 0.35s var(--ease-editorial);
+}
+
 .connect-item:hover .connect-description {
-    -webkit-clip-path: inset(0 0 0 0);
-    clip-path: inset(0 0 0 0);
+  clip-path: inset(0);
 }
-/* Container für normalen und geheimen Pfeil */
+
 .connect-arrow {
-    position: relative;
-    display: grid;
-    width: 1em;
-    height: 1em;
-
-    font-size: clamp(2rem, 4vw, 4.5rem);
-    line-height: 1;
+  position: relative;
+  display: grid;
+  width: 1em;
+  height: 1em;
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  line-height: 1;
 }
-/*
-  Normaler Pfeil:
-  Weiß, immer sichtbar, aber beim Hover unter dem Acid-Balken.
-*/
+
+.connect-arrow-base,
+.connect-arrow-hover {
+  grid-area: 1 / 1;
+}
+
 .connect-arrow-base {
-    grid-area: 1 / 1;
-    position: relative;
-    z-index: 0;
-
-    color: var(--paper);
+  position: relative;
+  z-index: 0;
+  color: var(--paper);
 }
-/*
-  Geheimer Pfeil:
-  Schwarz, über dem Acid-Balken, zunächst in der Mitte verborgen.
-*/
+
 .connect-arrow-hover {
-    grid-area: 1 / 1;
-    position: relative;
-    z-index: 2;
-
-    color: var(--ink);
-
-    -webkit-clip-path: inset(50% 0 50% 0);
-    clip-path: inset(50% 0 50% 0);
-
-    transition: clip-path 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+  position: relative;
+  z-index: 2;
+  color: var(--true-dark);
+  clip-path: inset(50% 0);
+  transition: clip-path 0.35s var(--ease-editorial);
 }
+
 .connect-item:hover .connect-arrow-hover {
-    -webkit-clip-path: inset(0 0 0 0);
-    clip-path: inset(0 0 0 0);
+  clip-path: inset(0);
+}
+/* ---------- Footer ---------- */
+footer { 
+  display: flex; 
+  justify-content: space-between; 
+  padding: 20px 3vw; 
+  background: var(--ink); 
+  color: var(--paper); 
 }
 
-/* Mobilansicht */
+footer p { margin: 0; }
+footer a { color: var(--acid); }
+
+/* =========================================================
+   7. MEDIA
+   ========================================================= */
+@media (max-width: 900px) {
+  .about-fold__eyebrow { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+  .about-fold__layout { grid-template-columns: 1fr; }
+  .about-fold__image { display: none; }
+  .about-fold__services { font-size: clamp(0.74rem, 1.6vw, 0.95rem); }
+}
+
 @media (max-width: 700px) {
-    .connect-grid {
-        margin-top: 5vh;
-    }
-    .connect-item {
-    grid-template-columns: 1fr auto;
-    gap: 0.8rem;
-    min-height: 120px;
-    }
-    .connect-number {
-        font-size: 0.6rem;
-    }
-    .connect-description {
-        font-size: 0.6rem;
-    }
-    .connect-arrow {
-        font-size: 2rem;
-    }
-}
-footer {
-    padding:20px 3vw;
-    display:flex;
-    justify-content:space-between;
-    background:var(--ink);
-    color:var(--paper)
-}
-footer p {
-    margin:0
-}
-footer a {
-    color:var(--acid)
-}
-.reveal {
-    opacity:0;
-    transform:translateY(32px);
-    transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)
-}
-.reveal.in {
-    opacity:1;
-    transform:none
-}
-@media(max-width:700px) {
-    body {
-        cursor:auto
-    }
-    .cursor-dot {
-        display:none
-    }
-    .site-header {
-        height:62px
-    }
-    .hero {
-        padding:20vh 6vw 4vh
-    }
-    .hero-title {
-        font-size:clamp(3.2rem,15vw,5.5rem)
-    }
-    .hero-actions {
-        margin-top:4vh
-    }
-    .hero-meta {
-        align-self:auto;
-        margin-top:7vh
-    }
-    .section {
-        padding:9vh 6vw
-    }
-    .section-label {
-        grid-template-columns:50px 1fr
-    }
-    .section-label span:last-child {
-        display:none
-    }
-    .project {
-        margin-bottom:10vh
-    }
-    .project-visual,.project-right .project-visual {
-        width:100%;
-        height:75vw;
-        margin-left:0
-    }
-    .project-info {
-        display:block
-    }
-    .project-info h2 {
-        font-size:2.3rem;
-        margin-bottom:1rem
-    }
-    .project-info div {
-        width:100%
-    }
-    .about-copy {
-        margin-top:10vh
-    }
-    .contact {
-        min-height:55vh
-    }
-    footer {
-        display:block;
-        line-height:1.8
-    }
-    .progress {
-        display:none
-    }
-        /* Auf Touch-Geräten kein Maus-Kreis-Effekt */
-    .hero-title-secret {
-        display: none;
-    }
+  body { cursor: auto; }
+  .section { padding: 9vh 6vw; }
+  .section-label { grid-template-columns: 50px 1fr; }
+  .section-label span:last-child { display: none; }
+  .site-header { height: 62px; }
+  .hero { padding: 20vh 6vw 4vh; }
+  .hero-title { font-size: clamp(3.2rem, 15vw, 5.5rem); }
+  .hero-title-secret { display: none; }
+  .hero-meta { align-self: auto; margin-top: 7vh; }
+  .progress { display: none; }
+  .history-grid, .connect-grid { margin-top: 5vh; }
+  .history-item { grid-template-columns: 75px 1fr; gap: 1rem; min-height: 135px; padding: 1.5rem 1.25rem; }
+  .history-year, .history-role, .history-hover { font-size: clamp(1.3rem, 6vw, 2rem); }
+  .history-company { font-size: 0.8rem; }
+  .project { margin-bottom: 10vh; }
+  .project-visual, .project-right .project-visual { width: 100%; height: 75vw; margin-left: 0; }
+  .project-info { display: block; }
+  .project-info h2 { margin-bottom: 1rem; font-size: 2.3rem; }
+  .project-info p { width: 100%; }
+  .about-folds { flex-direction: column; width: calc(100% + 12vw); min-height: 0; margin: 5vh -6vw 0; }
+  .about-folds::before, .about-folds::after, .about-fold::before, .about-fold::after { display: none; }
+  .about-fold { flex: none; min-height: 84px; border-left: 1px solid var(--about-line); border-bottom: 1px solid var(--about-line); transition: min-height 650ms var(--ease-out); }
+  .about-folds:has(.about-fold:hover) .about-fold, .about-folds.is-open .about-fold { flex-grow: 0; }
+  .about-folds:has(.about-fold:hover) .about-fold:hover, .about-folds.is-open .about-fold.is-active { min-height: min(76svh, 620px); }
+  .about-fold__closed { flex-direction: row; align-items: center; justify-content: space-between; padding: 1.15rem 1.25rem; }
+  .about-fold__title { margin: 0; font-size: clamp(1.2rem, 6vw, 2rem); }
+  .about-fold__open { gap: 2.2rem; padding: 1.25rem; }
+  .about-fold__top { gap: 1rem; }
+  .about-fold__eyebrow { max-width: 70%; font-size: clamp(1rem, 5vw, 1.6rem); white-space: normal; }
+  .about-fold__services { padding-top: 0; font-size: clamp(0.82rem, 4.1vw, 1.05rem); }
+  .about-fold__copy { font-size: 0.72rem; }
+  .connect-item { gap: 0.8rem; min-height: 120px; }
+  .connect-description { font-size: 0.7rem; }
+  .connect-arrow { font-size: 2rem; }
+  footer { display: block; line-height: 1.8; }
 }
 
-/* Eigenen Cursor auch auf klickbaren Elementen beibehalten */
-a,
-button,
-.menu-toggle,
-.menu-close {
-    cursor: none;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 1ms !important; transition-delay: 0ms !important; animation-duration: 1ms !important; }
 }
 
-/* ============ DARK / LIGHT MODE ============ */
+/* =========================================================
+   8. DARK / LIGHT MODE, TOGGLE, CURSOR
+   ========================================================= */
+body.light-mode { 
+  --ink: #fffce9;
+  --paper: #171816; 
+  --line: #c9c8c0; 
+  --acid: #9bbec7;
+  --about-line: #111;
+  background: var(--ink); 
+  color: var(--paper); }
+body.light-mode .history-company, body.light-mode .history .section-label, body.light-mode .work .section-label, body.light-mode .contact .section-label { color: #50514c; }
+body.light-mode .history-grid, body.light-mode .history-item, body.light-mode .connect-grid, body.light-mode .connect-item { border-color: #c9c8c0; }
+body.light-mode .progress span { background: var(--true-dark); }
+body.light-mode .work-card__front, body.light-mode .work-card__back { background: #f4e8d3; }
+.theme-toggle { position: absolute; top: 50%; left: 50%; z-index: 25; display: block; width: 74px; height: 34px; cursor: none; transform: translate(-50%, -50%); user-select: none; }
+.theme-toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.theme-toggle__track { position: relative; display: block; width: 100%; height: 100%; border: 1px solid rgba(241,240,234,.35); border-radius: 999px; background: rgba(241,240,234,.1); box-shadow: inset 0 1px 0 rgba(241,240,234,.18), 0 5px 18px rgba(0,0,0,.14); backdrop-filter: blur(12px) saturate(130%); transition: background .35s ease, border-color .35s ease, box-shadow .35s ease; }
+.theme-toggle__sun, .theme-toggle__moon { position: absolute; top: 50%; z-index: 1; font: 500 .85rem/1 "DM Mono", monospace; transform: translateY(-50%); transition: opacity .25s ease, color .35s ease; }
+.theme-toggle__sun { left: 10px; color: var(--paper); opacity: .45; }
+.theme-toggle__moon { right: 11px; color: var(--paper); }
+.theme-toggle__thumb { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; background: rgba(241,240,234,.9); box-shadow: 0 2px 8px rgba(0,0,0,.22), inset 0 1px 1px rgba(255,255,255,.75); transition: transform .42s var(--ease-out), background .35s ease, box-shadow .35s ease; }
+.theme-toggle input:checked + .theme-toggle__track { border-color: rgba(23,24,22,.3); background: rgba(23,24,22,.08); }
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb { transform: translateX(-40px); background: var(--true-dark); }
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__sun { color: var(--true-dark); opacity: 1; }
+.theme-toggle input:checked + .theme-toggle__track .theme-toggle__moon { color: var(--true-dark); opacity: .4; }
+.theme-toggle input:focus-visible + .theme-toggle__track { outline: 2px solid var(--acid); outline-offset: 4px; }
 
-/*
-  Zusätzliche feste Farben:
-  --ink und --paper werden im Light Mode getauscht.
-  --true-dark bleibt immer wirklich schwarz/dunkel.
-*/
-:root {
-    --true-dark: #171816;
-    --warm-white: #f1f0ea;
-}
+.cursor-dot { position: fixed; z-index: 100; width: 12px; height: 12px; border-radius: 50%; background: #fff; mix-blend-mode: difference; pointer-events: none; transform: translate(-50%, -50%); transition: width .22s var(--ease-out), height .22s var(--ease-out), opacity .18s ease, transform .22s var(--ease-out); }
+.cursor-dot.hover, .cursor-dot.hero-text-hover { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 
-/*
-  Standard: Dark Mode.
-  Deine bestehenden Werte bleiben unverändert:
-  --ink   = dunkler Hintergrund
-  --paper = helle Schrift
-*/
-body {
-    background: var(--ink);
-    color: var(--paper);
-}
-
-/*
-  Light Mode:
-  Alle bisherigen var(--ink)-Flächen werden warmweiß.
-  Alle bisherigen var(--paper)-Texte werden schwarz.
-  --acid wird ausdrücklich NICHT verändert.
-*/
-body.light-mode {
-    --ink: #f1f0ea;
-    --paper: #171816;
-    --line: #c9c8c0;
-
-    background: var(--ink);
-    color: var(--paper);
-}
-
-/* Header, Monogramm und Menü übernehmen automatisch var(--paper) */
-.site-header {
-    color: var(--paper);
-}
-
-/* Sicherstellen, dass die Header-Elemente die aktuelle Headerfarbe erben */
-.brand,
-.menu-toggle,
-.menu-close {
-    color: inherit;
-}
-
-.menu-toggle span {
-    border-top-color: currentColor;
-}
-
-/*
-  Elemente auf Acid-Flächen:
-  Der geheime Text muss in BEIDEN Modi schwarz bleiben,
-  nicht warmweiß, wenn --ink im Light Mode getauscht wird.
-*/
-.hero-title-secret,
-.history-hover,
-.connect-description,
-.connect-arrow-hover {
-    color: var(--true-dark);
-}
-
-/*
-  Gleiche Korrektur für dunkle grafische Balken:
-  Sie bleiben auch im Light Mode wirklich dunkel.
-*/
-.bar,
-.progress span {
-    background: var(--true-dark);
-}
-/*
-  Auch im hellen Modus bleibt der untere Bildverlauf dunkel,
-  damit Überschrift und Text auf den About-Bildern gut lesbar bleiben.
-*/
-body.light-mode .about-panel__overlay {
-    background: linear-gradient(
-        180deg,
-        rgba(23, 24, 22, 0.10) 0%,
-        rgba(23, 24, 22, 0.20) 45%,
-        rgba(23, 24, 22, 0.86) 100%
-    );
-}
-
-body.light-mode .about-panel:hover .about-panel__overlay,
-body.light-mode .about-panel.is-active .about-panel__overlay {
-    background: linear-gradient(
-        180deg,
-        rgba(23, 24, 22, 0.06) 0%,
-        rgba(23, 24, 22, 0.08) 42%,
-        rgba(23, 24, 22, 0.78) 100%
-    );
-}
-/* About-Typografie bleibt über dem dunklen Bildverlauf hell */
-body.light-mode .about-panel,
-body.light-mode .about-panel__content {
-    color: var(--warm-white);
-}
-/*
-  Einzelne fest eingetragene helle Farben in der Historie:
-  Im Light Mode werden sie dunkel.
-*/
-body.light-mode .history-company,
-body.light-mode .history .section-label,
-body.light-mode .work .section-label,
-body.light-mode .about .section-label,
-body.light-mode .contact .section-label {
-    color: #50514c;
-}
-
-/* Trennlinien auf warmweißem Hintergrund */
-body.light-mode .history .section-label,
-body.light-mode .work .section-label,
-body.light-mode .about .section-label,
-body.light-mode .contact .section-label,
-body.light-mode .history-grid,
-body.light-mode .history-item,
-body.light-mode .connect-grid,
-body.light-mode .connect-item {
-    border-color: #c9c8c0;
-}
-
-/* ============ TOGGLE IM HEADER ============ */
-
-.theme-toggle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 25;
-
-    transform: translate(-50%, -50%);
-    display: block;
-
-    width: 74px;
-    height: 34px;
-
-    cursor: pointer;
-    user-select: none;
-}
-
-/* Checkbox bleibt funktional, aber unsichtbar */
-.theme-toggle input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-
-    opacity: 0;
-    pointer-events: none;
-}
-
-/*
-  Glasartige Schiene:
-  halbtransparent, weich, mit feiner Kontur.
-*/
-.theme-toggle__track {
-    position: relative;
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    border: 1px solid rgba(241, 240, 234, 0.35);
-    border-radius: 999px;
-
-    background: rgba(241, 240, 234, 0.1);
-    box-shadow:
-        inset 0 1px 0 rgba(241, 240, 234, 0.18),
-        0 5px 18px rgba(0, 0, 0, 0.14);
-
-    -webkit-backdrop-filter: blur(12px) saturate(130%);
-    backdrop-filter: blur(12px) saturate(130%);
-
-    transition:
-        background 0.35s ease,
-        border-color 0.35s ease,
-        box-shadow 0.35s ease;
-}
-
-/* Sonne und Mond */
-.theme-toggle__sun,
-.theme-toggle__moon {
-    position: absolute;
-    top: 50%;
-    z-index: 1;
-
-    transform: translateY(-50%);
-    font: 500 0.85rem/1 "DM Mono", monospace;
-
-    transition:
-        opacity 0.25s ease,
-        color 0.35s ease;
-}
-
-.theme-toggle__sun {
-    left: 10px;
-    opacity: 0.45;
-    color: var(--paper);
-}
-
-.theme-toggle__moon {
-    right: 11px;
-    opacity: 1;
-    color: var(--paper);
-}
-
-/*
-  Beweglicher, runder Glasschieber:
-  Im Dark Mode rechts beim Mond.
-*/
-.theme-toggle__thumb {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-
-    width: 24px;
-    height: 24px;
-
-    border-radius: 50%;
-    background: rgba(241, 240, 234, 0.9);
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.22),
-        inset 0 1px 1px rgba(255, 255, 255, 0.75);
-
-    transition:
-        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        background 0.35s ease,
-        box-shadow 0.35s ease;
-}
-
-/*
-  Checkbox aktiviert = Light Mode:
-  Schieber wandert nach links zur Sonne.
-*/
-.theme-toggle input:checked + .theme-toggle__track {
-    border-color: rgba(23, 24, 22, 0.3);
-    background: rgba(23, 24, 22, 0.08);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.7),
-        0 5px 18px rgba(23, 24, 22, 0.12);
-}
-
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb {
-    transform: translateX(-40px);
-    background: var(--true-dark);
-    box-shadow:
-        0 2px 8px rgba(23, 24, 22, 0.25),
-        inset 0 1px 1px rgba(255, 255, 255, 0.12);
-}
-
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__sun {
-    opacity: 1;
-    color: var(--true-dark);
-}
-
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__moon {
-    opacity: 0.4;
-    color: var(--true-dark);
-}
-
-/* Sichtbarer Fokus für Tastaturbedienung */
-.theme-toggle input:focus-visible + .theme-toggle__track {
-    outline: 2px solid var(--acid);
-    outline-offset: 4px;
-}
-
-/* Auf Mobilgeräten etwas kompakter */
 @media (max-width: 700px) {
-    .theme-toggle {
-        width: 64px;
-        height: 30px;
-    }
-
-    .theme-toggle__thumb {
-        width: 22px;
-        height: 22px;
-    }
-
-    .theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb {
-        transform: translateX(-34px);
-    }
-
-    .theme-toggle__sun {
-        left: 8px;
-    }
-
-    .theme-toggle__moon {
-        right: 9px;
-    }
+  .cursor-dot { display: none; }
+  .theme-toggle { width: 64px; height: 30px; cursor: pointer; }
+  .theme-toggle__thumb { width: 22px; height: 22px; }
+  .theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb { transform: translateX(-34px); }
+  .theme-toggle__sun { left: 8px; }
+  .theme-toggle__moon { right: 9px; }
 }
-/* Toggle nutzt ebenfalls den eigenen Cursor-Kreis */
-.theme-toggle,
-.theme-toggle *,
-.theme-toggle input,
-.theme-toggle__track {
-    cursor: none;
