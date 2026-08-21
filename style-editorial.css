@@ -231,11 +231,259 @@ footer {
 .history-item:hover .history-hover { clip-path: inset(0); }
 .history-fill { --fill: 0; color: transparent; background: linear-gradient(90deg, var(--paper) 0%, var(--paper) calc(var(--fill) * 1%), #666761 calc(var(--fill) * 1%), #666761 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
+
+/* ---------- Ausgewählte Projekte ---------- */
+.about {
+  --about-line: var(--paper);
+  min-height: 70svh;
+  overflow: hidden;
+  background: var(--about-bg);
+  color: var(--about-fg);
+  padding-bottom: 0;
+}
+
+.about-folds {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: calc(100%+7vw);
+  min-height: min(60svh, 620px);
+  margin: 7vh -4.22vw 0;
+  overflow: hidden;
+  background: var(--about-bg);
+}
+
+.about-folds::before,
+.about-folds::after {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--about-line);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease 260ms;
+}
+
+.about-folds::before {
+  top: 0;
+}
+
+.about-folds::after {
+  bottom: 0;
+}
+
+.about-fold {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: min(60svh, 620px);
+  overflow: hidden;
+  border-right: 1px solid var(--about-line);
+  color: var(--about-fg);
+  cursor: none;
+  transition: flex-grow 650ms var(--ease-out);
+}
+
+.about-fold:first-child {
+  border-left: 1px solid var(--about-line);
+}
+
+.about-fold::before,
+.about-fold::after {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--about-line);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 650ms var(--ease-out), opacity 1ms linear 650ms;
+}
+
+.about-fold::before {
+  top: 0;
+}
+
+.about-fold::after {
+  bottom: 0;
+}
+
+.about-fold:hover::before,
+.about-fold:hover::after,
+.about-fold.is-active::before,
+.about-fold.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+  transition: transform 650ms var(--ease-out), opacity 1ms linear;
+}
+
+.about-folds:has(.about-fold:hover) .about-fold,
+.about-folds.is-open .about-fold {
+  flex-grow: 1;
+}
+
+.about-folds:has(.about-fold:hover) .about-fold:hover,
+.about-folds.is-open .about-fold.is-active {
+  flex-grow: 2.5;
+}
+
+.about-fold__closed {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: clamp(1rem, 2.2vw, 2.2rem) clamp(0.75rem, 1.25vw, 1.5rem);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 150ms ease, visibility 0s linear;
+}
+
+.about-fold__number {
+  display: block;
+  font: 500 clamp(0.62rem, 0.85vw, 0.82rem) / 1 "DM Mono", monospace;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+}
+
+.about-fold__title {
+  --title-safe-space: clamp(0.45rem, 0.8vw, 1rem);
+  max-inline-size: calc(100% - var(--title-safe-space));
+  margin: clamp(3.8rem, 8vh, 7rem) 0 0;
+  font-size: clamp(1.2rem, 2vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.about-fold:hover .about-fold__closed,
+.about-fold.is-active .about-fold__closed {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0s, 150ms;
+}
+
+.about-fold__open {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: space-between;
+  row-gap: clamp(1rem, 2vh, 2rem);
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  padding: clamp(1.2rem, 2vw, 2.5rem);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 180ms ease-out, transform 320ms var(--ease-out), visibility 0s linear 320ms;
+}
+
+.about-fold:hover .about-fold__open,
+.about-fold.is-active .about-fold__open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 220ms ease-out 110ms, transform 460ms var(--ease-out) 110ms, visibility 0s linear;
+}
+
+.about-fold__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.about-fold__eyebrow {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.about-fold__layout {
+  display: grid;
+  grid-template-columns: minmax(145px, 0.95fr) minmax(160px, 1fr);
+  align-items: start;
+  gap: clamp(1.25rem, 2.7vw, 3.4rem);
+}
+
+.about-fold__services {
+  display: grid;
+  align-content: start;
+  gap: 0.42rem;
+  padding-top: clamp(0.5rem, 2.5vh, 2.3rem);
+  font-size: clamp(1rem, 1.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  white-space: nowrap;
+}
+
+.about-fold__image {
+  width: 100%;
+  height: clamp(120px, 22vh, 290px);
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.94);
+  transition: opacity 180ms ease-out, transform 380ms var(--ease-out);
+}
+
+.about-fold__copy {
+  max-width: 65ch;
+  margin: 0;
+  font: 400 clamp(0.9rem, 1.1vw, 1.3rem) / 1.42 "DM Mono", monospace;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 160ms ease-out, transform 300ms var(--ease-out);
+}
+
+.about-fold:hover .about-fold__image,
+.about-fold.is-active .about-fold__image {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 240ms ease-out 150ms, transform 580ms var(--ease-out) 150ms;
+}
+
+.about-fold:hover .about-fold__copy,
+.about-fold.is-active .about-fold__copy {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease-out 210ms, transform 460ms var(--ease-out) 210ms;
+}
+
+.about-fold:focus-visible {
+  outline: 3px solid var(--acid);
+  outline-offset: -5px;
+}
+
 /* ---------- Über mich ---------- */
 .work {
   overflow: hidden;
   color: var(--paper);
-  padding-bottom: clamp(2.5rem, 5vh, 4rem);
+  padding-bottom: 0;
 }
 
 .work-collage {
@@ -475,251 +723,7 @@ footer {
     transition: none;
   }
 }
-/* ---------- Ausgewählte Projekte ---------- */
-.about {
-  --about-line: var(--paper);
-  min-height: 70svh;
-  overflow: hidden;
-  background: var(--about-bg);
-  color: var(--about-fg);
-}
 
-.about-folds {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  width: calc(100%+7vw);
-  min-height: min(60svh, 620px);
-  margin: 7vh -4.22vw 0;
-  overflow: hidden;
-  background: var(--about-bg);
-}
-
-.about-folds::before,
-.about-folds::after {
-  content: "";
-  position: absolute;
-  z-index: 10;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--about-line);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease 260ms;
-}
-
-.about-folds::before {
-  top: 0;
-}
-
-.about-folds::after {
-  bottom: 0;
-}
-
-.about-fold {
-  position: relative;
-  isolation: isolate;
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: min(60svh, 620px);
-  overflow: hidden;
-  border-right: 1px solid var(--about-line);
-  color: var(--about-fg);
-  cursor: none;
-  transition: flex-grow 650ms var(--ease-out);
-}
-
-.about-fold:first-child {
-  border-left: 1px solid var(--about-line);
-}
-
-.about-fold::before,
-.about-fold::after {
-  content: "";
-  position: absolute;
-  z-index: 8;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--about-line);
-  opacity: 0;
-  pointer-events: none;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 650ms var(--ease-out), opacity 1ms linear 650ms;
-}
-
-.about-fold::before {
-  top: 0;
-}
-
-.about-fold::after {
-  bottom: 0;
-}
-
-.about-fold:hover::before,
-.about-fold:hover::after,
-.about-fold.is-active::before,
-.about-fold.is-active::after {
-  opacity: 1;
-  transform: scaleX(1);
-  transition: transform 650ms var(--ease-out), opacity 1ms linear;
-}
-
-.about-folds:has(.about-fold:hover) .about-fold,
-.about-folds.is-open .about-fold {
-  flex-grow: 1;
-}
-
-.about-folds:has(.about-fold:hover) .about-fold:hover,
-.about-folds.is-open .about-fold.is-active {
-  flex-grow: 2.5;
-}
-
-.about-fold__closed {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-width: 0;
-  padding: clamp(1rem, 2.2vw, 2.2rem) clamp(0.75rem, 1.25vw, 1.5rem);
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 150ms ease, visibility 0s linear;
-}
-
-.about-fold__number {
-  display: block;
-  font: 500 clamp(0.62rem, 0.85vw, 0.82rem) / 1 "DM Mono", monospace;
-  letter-spacing: -0.06em;
-  white-space: nowrap;
-}
-
-.about-fold__title {
-  --title-safe-space: clamp(0.45rem, 0.8vw, 1rem);
-  max-inline-size: calc(100% - var(--title-safe-space));
-  margin: clamp(3.8rem, 8vh, 7rem) 0 0;
-  font-size: clamp(1.2rem, 2vw, 2.7rem);
-  font-weight: 800;
-  letter-spacing: -0.055em;
-  line-height: 0.88;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-}
-
-.about-fold:hover .about-fold__closed,
-.about-fold.is-active .about-fold__closed {
-  opacity: 0;
-  visibility: hidden;
-  transition-delay: 0s, 150ms;
-}
-
-.about-fold__open {
-  position: relative;
-  z-index: 3;
-  display: grid;
-  grid-template-rows: auto auto auto;
-  align-content: space-between;
-  row-gap: clamp(1rem, 2vh, 2rem);
-  width: 100%;
-  height: 100%;
-  min-height: inherit;
-  padding: clamp(1.2rem, 2vw, 2.5rem);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(12px);
-  transition: opacity 180ms ease-out, transform 320ms var(--ease-out), visibility 0s linear 320ms;
-}
-
-.about-fold:hover .about-fold__open,
-.about-fold.is-active .about-fold__open {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
-  transition: opacity 220ms ease-out 110ms, transform 460ms var(--ease-out) 110ms, visibility 0s linear;
-}
-
-.about-fold__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.about-fold__eyebrow {
-  margin: 0;
-  font-size: clamp(1.3rem, 2.4vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: -0.055em;
-  line-height: 0.9;
-  text-align: right;
-  white-space: nowrap;
-}
-
-.about-fold__layout {
-  display: grid;
-  grid-template-columns: minmax(145px, 0.95fr) minmax(160px, 1fr);
-  align-items: start;
-  gap: clamp(1.25rem, 2.7vw, 3.4rem);
-}
-
-.about-fold__services {
-  display: grid;
-  align-content: start;
-  gap: 0.42rem;
-  padding-top: clamp(0.5rem, 2.5vh, 2.3rem);
-  font-size: clamp(1rem, 1.5vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
-  white-space: nowrap;
-}
-
-.about-fold__image {
-  width: 100%;
-  height: clamp(120px, 22vh, 290px);
-  object-fit: cover;
-  object-position: center;
-  opacity: 0;
-  transform: translateY(8px) scale(0.94);
-  transition: opacity 180ms ease-out, transform 380ms var(--ease-out);
-}
-
-.about-fold__copy {
-  max-width: 65ch;
-  margin: 0;
-  font: 400 clamp(0.9rem, 1.1vw, 1.3rem) / 1.42 "DM Mono", monospace;
-  letter-spacing: -0.055em;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 160ms ease-out, transform 300ms var(--ease-out);
-}
-
-.about-fold:hover .about-fold__image,
-.about-fold.is-active .about-fold__image {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition: opacity 240ms ease-out 150ms, transform 580ms var(--ease-out) 150ms;
-}
-
-.about-fold:hover .about-fold__copy,
-.about-fold.is-active .about-fold__copy {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 220ms ease-out 210ms, transform 460ms var(--ease-out) 210ms;
-}
-
-.about-fold:focus-visible {
-  outline: 3px solid var(--acid);
-  outline-offset: -5px;
-}
 /* ---------- Kontakt ---------- */
 .contact {
   min-height: 100svh;
@@ -894,7 +898,7 @@ body.light-mode {
   --about-line: #111;
   background: var(--ink); 
   color: var(--paper); }
-body.light-mode .history-company, body.light-mode .history .section-label, body.light-mode .work .section-label, body.light-mode .contact .section-label { color: #50514c; }
+body.light-mode .history-company { color: #50514c; }
 body.light-mode .history-grid, body.light-mode .history-item, body.light-mode .connect-grid, body.light-mode .connect-item { border-color: #c9c8c0; }
 body.light-mode .progress span { background: var(--true-dark); }
 body.light-mode .work-card__front, body.light-mode .work-card__back { background: #f4e8d3; }

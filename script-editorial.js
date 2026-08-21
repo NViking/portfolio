@@ -504,8 +504,8 @@ document.addEventListener("DOMContentLoaded", () => {
     animatedLabels.forEach((item) => {
       const rect = item.label.getBoundingClientRect();
 
-      const animationStart = viewportHeight * 0.92;
-      const animationEnd = viewportHeight * 0.12;
+      const animationStart = viewportHeight * 0.87;
+      const animationEnd = viewportHeight * 0.32;
 
       const progress = clamp(
         (animationStart - rect.top) /
