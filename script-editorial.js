@@ -401,6 +401,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* FOOTER */
+  const footerLinks = document.querySelectorAll(".footer-connect__links a");
+  console.log(`${footerLinks.length} Footer-Links geladen.`);
+
   /* ============ SECTION LABELS: SCROLL-WELLE ============ */
 
   const reducedMotion = window.matchMedia(
@@ -558,6 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let scrollAnimationFrame;
 
+  
   function updateOnScroll() {
     window.cancelAnimationFrame(scrollAnimationFrame);
 

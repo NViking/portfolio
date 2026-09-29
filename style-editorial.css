@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 /* =========================================================
    2. ROOT
    ========================================================= */
@@ -106,10 +106,8 @@ footer {
 .reveal.in { opacity: 1; transform: none; }
 
 /* =========================================================
-   6. HEADER BIS FOOTER
+    HEADER / NAVIGATION
    ========================================================= */
-
-/* ---------- Header / Navigation ---------- */
 .site-header {
   position: fixed;
   inset: 0 0 auto;
@@ -135,7 +133,7 @@ footer {
 }
 
 .brand span { margin-left: 2px; font-size: 0.65rem; vertical-align: top; }
-.brand:hover { transform: translateY(-3px) rotate(-4deg) scale(1.08); letter-spacing: -0.04em; }
+.brand:hover { transform: translateY(-3px) rotate(-4deg) scale(1.08); letter-spacing: -0.04em; cursor: none;}
 
 .menu-toggle,
 .menu-close {
@@ -149,7 +147,7 @@ footer {
 }
 
 .menu-toggle { transition: transform 0.3s ease, letter-spacing 0.3s ease; }
-.menu-toggle:hover { transform: translateY(-3px) rotate(4deg) scale(1.08); letter-spacing: 0.04em; }
+.menu-toggle:hover { transform: translateY(-3px) rotate(4deg) scale(1.08); letter-spacing: 0.04em;cursor: none;}
 .menu-toggle span {
   display: inline-block;
   width: 25px;
@@ -157,7 +155,7 @@ footer {
   border-top: 1px solid currentColor;
   transition: width 0.3s ease, transform 0.3s ease;
 }
-.menu-toggle:hover span { width: 34px; transform: translateX(4px); }
+.menu-toggle:hover span { width: 34px; transform: translateX(4px);}
 
 .menu {
   position: fixed;
@@ -175,14 +173,16 @@ footer {
 .menu-top { display: flex; justify-content: space-between; font: 400 0.68rem "DM Mono", monospace; text-transform: uppercase; }
 .menu nav { margin: auto 0; }
 .menu nav a { display: block; padding: 1.2vh 0; border-top: 1px solid #4d4e48; color: inherit; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 600; letter-spacing: -0.08em; line-height: 1; text-decoration: none; }
-.menu nav a:hover { color: var(--acid); }
+.menu nav a:hover { color: var(--acid);cursor: none; }
 .menu nav a small { margin-right: 1rem; font: 400 0.65rem "DM Mono", monospace; vertical-align: middle; }
 .menu-links { display: flex; gap: 2rem; font: 0.7rem "DM Mono", monospace; }
 
 .progress { position: fixed; top: 110px; right: 16px; z-index: 19; width: 1px; height: 100px; background: #bab9b1; }
 .progress span { display: block; width: 100%; height: 0; background: var(--paper); }
 
-/* ---------- Hero ---------- */
+/* =========================================================
+    HERO
+   ========================================================= */
 .hero {
   display: flex;
   flex-direction: column;
@@ -207,23 +207,124 @@ footer {
 .hero-icon, .resume-cta { display: inline-flex; align-items: center; justify-content: center; height: 48px; border: 1px solid var(--paper); color: var(--paper); text-decoration: none; transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
 .hero-icon { width: 48px; border-radius: 50%; }
 .hero-icon svg { width: 20px; height: 20px; fill: currentColor; }
-.hero-icon:hover, .resume-cta:hover { background: var(--paper); color: var(--ink); transform: scale(1.12); box-shadow: 0 0 0 4px var(--acid); }
+.hero-icon:hover, .resume-cta:hover { background: var(--paper); color: var(--ink); transform: scale(1.12); box-shadow: 0 0 0 4px var(--acid); cursor: none;}
 .hero-meta { align-self: flex-end; display: flex; gap: 1rem; align-items: end; width: min(350px, 100%); font-size: 0.78rem; line-height: 1.45; }
 .scroll-hint { margin-top: auto; font: 0.63rem "DM Mono", monospace; text-transform: uppercase; }
 .scroll-hint span { display: inline-block; margin-left: 5px; animation: bob 1.8s infinite; }
 @keyframes bob { 50% { transform: translateY(6px); } }
 
-/* ---------- Historie ---------- */
+/* =========================================================
+   HERO: MOTIV RECHTS IM HINTERGRUND
+   ========================================================= */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero > .hero-art {
+  position: absolute;
+  z-index: 0;
+
+  right: clamp(-8rem, -6vw, -2rem);
+  bottom: clamp(-8rem, -10vh, -3rem);
+
+  width: min(54vw, 820px);
+  aspect-ratio: 0.72;
+
+  pointer-events: none;
+
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 72% at 62% 52%,
+    #000 30%,
+    rgba(0, 0, 0, 0.88) 50%,
+    rgba(0, 0, 0, 0.42) 68%,
+    transparent 100%
+  );
+
+  mask-image: radial-gradient(
+    ellipse 68% 72% at 62% 52%,
+    #000 30%,
+    rgba(0, 0, 0, 0.88) 50%,
+    rgba(0, 0, 0, 0.42) 68%,
+    transparent 100%
+  );
+
+  opacity: 0.99;
+
+  transform-origin: bottom right;
+}
+
+.hero-art img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: right bottom;
+
+  mix-blend-mode: multiply;
+}
+
+/*
+  Im hellen Modus darf das Motiv etwas zurückhaltender sein.
+*/
+body.light-mode .hero-art {
+  opacity: 0.72;
+}
+
+body.light-mode .hero-art img {
+  filter: brightness(1.08) contrast(1.1) saturate(1.15);
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+  .hero > .hero-art {
+    right: -13vw;
+    bottom: -5vh;
+    width: min(68vw, 620px);
+
+    opacity: 0.7;
+  }
+}
+
+/* ---------- Smartphone ---------- */
+
+@media (max-width: 700px) {
+  .hero > .hero-art {
+    right: -26vw;
+    bottom: -3vh;
+
+    width: 108vw;
+
+    opacity: 0.4;
+
+    /*
+      Auf kleinen Screens weiter nach rechts,
+      damit der Hero-Text priorisiert bleibt.
+    */
+    transform: rotate(-2deg) translateX(8%);
+  }
+}
+
+/* =========================================================
+    HISTORIE
+   ========================================================= */
 .history, .work, .contact { background: var(--ink); color: var(--paper); }
-.history { padding-bottom: 0; }
+.history { padding-bottom: 1%; }
 .history .section-label, .work .section-label, .contact .section-label, .about .section-label { border-color: var(--paper); color: var(--paper); }
 .history-grid, .connect-grid { margin-top: 7vh; border-top: 1px solid var(--dark-line); }
-.history-item { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(120px, 22%) 1fr; gap: 2rem; min-height: 180px; padding: 2rem clamp(1.25rem, 3vw, 3.5rem); overflow: hidden; border-bottom: 1px solid var(--dark-line); }
+.history-item { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(120px, 22%) 1fr; align-items: start; gap: 2rem; min-height: 180px; padding: 2rem clamp(1.25rem, 3vw, 3.5rem); overflow: hidden; border-bottom: 1px solid var(--dark-line); }
 .history-item::before { content: ""; position: absolute; z-index: 1; inset: 0; background: var(--acid); transform: scaleY(0); transform-origin: center; transition: transform 0.25s var(--ease-editorial); }
 .history-item:hover::before { transform: scaleY(1); }
 .history-year, .history-default { position: relative; z-index: 0; }
-.history-year, .history-role, .history-hover { font-size: clamp(1.8rem, 3vw, 3.5rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.15; }
-.history-content { display: grid; align-items: center; }
+.history-year, .history-role, .history-hover { font-size: clamp(1.8rem, 3vw, 3.5rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.3; }
+.history-content { display: grid; align-items: start; }
 .history-default, .history-hover { grid-area: 1 / 1; }
 .history-default { display: flex; flex-direction: column; gap: 0.35rem; }
 .history-company { color: #bcbdb6; font-size: 1rem; }
@@ -232,14 +333,16 @@ footer {
 .history-fill { --fill: 0; color: transparent; background: linear-gradient(90deg, var(--paper) 0%, var(--paper) calc(var(--fill) * 1%), #666761 calc(var(--fill) * 1%), #666761 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 
-/* ---------- Ausgewählte Projekte ---------- */
+/* =========================================================
+    PROJEKTE
+   ========================================================= */
 .about {
   --about-line: var(--paper);
   min-height: 70svh;
   overflow: hidden;
   background: var(--about-bg);
   color: var(--about-fg);
-  padding-bottom: 0;
+  padding-bottom:1%;
 }
 
 .about-folds {
@@ -479,11 +582,13 @@ footer {
   outline-offset: -5px;
 }
 
-/* ---------- Über mich ---------- */
+/* =========================================================
+    ÜBER MICH
+   ========================================================= */
 .work {
   overflow: hidden;
   color: var(--paper);
-  padding-bottom: 0;
+  padding-bottom:1%;
 }
 
 .work-collage {
@@ -724,116 +829,97 @@ footer {
   }
 }
 
-/* ---------- Kontakt ---------- */
-.contact {
-  min-height: 100svh;
+/* =========================================================
+   FOOTER: SECTION LABEL
+   ========================================================= */
+  
+.footer-connect {
+  min-height: 22svh;
+  padding: 4vh 5vw 3.2vh;
+  background: var(--ink);
+}
+
+.footer-connect .section-label {
+  border-top-color: var(--dark-line);
+  color: var(--paper);
   padding-bottom: 0;
 }
 
-.connect-item {
-  position: relative;
-  isolation: isolate;
+.footer-connect__grid {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 2fr) minmax(200px, 0.7fr);
+  gap: clamp(3rem, 12vw, 15rem);
   align-items: center;
-  gap: 2rem;
-  min-height: 145px;
-  padding: 1.4rem clamp(1.25rem, 3vw, 3.5rem);
-  overflow: hidden;
-  border-bottom: 1px solid var(--dark-line);
+  margin-top: clamp(2.5rem, 5vh, 4.5rem);
+  margin-left: 5%;
+  margin-bottom: 1%;
+}
+
+.footer-connect__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(3rem, 10vw, 12rem);
+  row-gap: 0.3rem;
+}
+
+
+
+.footer-connect__links a {
+  width: fit-content;
   color: var(--paper);
+  font-size: clamp(1.9rem, 3vw, 3.6rem);
+  font-weight: 480;
+  letter-spacing: -0.09em;
+  line-height: 0.8;
   text-decoration: none;
+
+
 }
 
-.connect-item::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: var(--acid);
-  transform: scaleY(0);
-  transform-origin: center;
-  transition: transform 0.25s var(--ease-editorial);
+.footer-connect__links a::before {
+  content: "◢";
+  display: inline-block;
+  color: var(--acid);
+  font-size: 0.66em;
+  margin-right: -0.52em;
+  vertical-align: 0.3em;
+  transform: rotate(270deg);
 }
 
-.connect-item:hover::before {
-  transform: scaleY(1);
+.footer-connect__links a:hover,
+.footer-connect__links a:focus-visible {
+  color: var(--acid);
+  outline: none;
+  cursor: none;
 }
 
-.connect-content {
+.footer-connect__details {
   display: grid;
-  min-width: 0;
+  gap: 0.7rem;
+  margin: 0;
+  color: var(--muted);
+  font: 400 clamp(0.65rem, 0.72vw, 0.8rem)/1.45 "DM Mono", monospace;
+  font-style: normal;
 }
 
-.connect-name,
-.connect-description {
-  grid-area: 1 / 1;
-  font-size: clamp(2.5rem, 5.5vw, 6.4rem);
-  font-weight: 600;
-  letter-spacing: -0.06em;
-  line-height: 0.85;
+.footer-connect__details p { display: grid; gap: 0.25rem; margin: 0; }
+.footer-connect__details strong { color: var(--paper); font-weight: 600; }
+.footer-connect__details a { color: inherit; text-decoration: none; }
+.footer-connect__details a:hover,
+.footer-connect__details a:focus-visible { color: var(--acid); outline: none; cursor: none; }
+
+@media (max-width: 800px) {
+  .footer-connect { min-height: auto; padding: 5vh 6vw 9vh; }
+  .footer-connect__grid { grid-template-columns: 1fr; gap: 4rem; margin-top: 4.5rem; }
+  .footer-connect__links { column-gap: 2rem; }
 }
 
-.connect-name {
-  position: relative;
-  z-index: 0;
-  color: var(--paper);
+@media (max-width: 500px) {
+  .footer-connect__links { grid-template-columns: 1fr; gap: 0.55rem; }
+  .footer-connect__links a { font-size: clamp(2.7rem, 13vw, 4rem); }
+  .footer-connect__details { gap: 1.7rem; }
 }
 
-.connect-description {
-  position: relative;
-  z-index: 2;
-  color: var(--true-dark);
-  clip-path: inset(50% 0);
-  transition: clip-path 0.35s var(--ease-editorial);
-}
-
-.connect-item:hover .connect-description {
-  clip-path: inset(0);
-}
-
-.connect-arrow {
-  position: relative;
-  display: grid;
-  width: 1em;
-  height: 1em;
-  font-size: clamp(2rem, 4vw, 4.5rem);
-  line-height: 1;
-}
-
-.connect-arrow-base,
-.connect-arrow-hover {
-  grid-area: 1 / 1;
-}
-
-.connect-arrow-base {
-  position: relative;
-  z-index: 0;
-  color: var(--paper);
-}
-
-.connect-arrow-hover {
-  position: relative;
-  z-index: 2;
-  color: var(--true-dark);
-  clip-path: inset(50% 0);
-  transition: clip-path 0.35s var(--ease-editorial);
-}
-
-.connect-item:hover .connect-arrow-hover {
-  clip-path: inset(0);
-}
-/* ---------- Footer ---------- */
-footer { 
-  display: flex; 
-  justify-content: space-between; 
-  padding: 20px 3vw; 
-  background: var(--ink); 
-  color: var(--paper); 
-}
-
-footer p { margin: 0; }
-footer a { color: var(--acid); }
 
 /* =========================================================
    7. MEDIA
