@@ -106,12 +106,13 @@ footer {
 .reveal.in { opacity: 1; transform: none; }
 
 /* =========================================================
-    HEADER / NAVIGATION
+   HEADER & LIQUID-GLASS DROPDOWN MENU
    ========================================================= */
+
 .site-header {
   position: fixed;
   inset: 0 0 auto;
-  z-index: 20;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -121,7 +122,9 @@ footer {
   transition: color 0.15s ease;
 }
 
-.site-header.on-light { color: var(--ink); }
+.site-header.on-light {
+  color: var(--ink);
+}
 
 .brand {
   color: inherit;
@@ -132,52 +135,203 @@ footer {
   transition: transform 0.3s ease, letter-spacing 0.3s ease;
 }
 
-.brand span { margin-left: 2px; font-size: 0.65rem; vertical-align: top; }
-.brand:hover { transform: translateY(-3px) rotate(-4deg) scale(1.08); letter-spacing: -0.04em; cursor: none;}
+.brand span {
+  margin-left: 2px;
+  font-size: 0.65rem;
+  vertical-align: top;
+}
 
-.menu-toggle,
-.menu-close {
+.brand:hover {
+  transform: scale(1.08);
+  color: var(--acid);
+  letter-spacing: -0.04em;
+}
+
+.menu-wrapper {
+  position: absolute;
+  top: 18px;
+  right: 3vw;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 30px;
+  padding: 10px 18px;
+  border-radius: 22px;
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    backdrop-filter 0.35s ease,
+    min-width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Das Glasrechteck umschließt beim Hover das gesamte Menü */
+.menu-wrapper:hover,
+.menu-wrapper:focus-within {
+  min-width: 1rem;
+  border-color: rgba(241, 240, 234, 0.35);
+  background: rgba(241, 240, 234, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(241, 240, 234, 0.18),
+    0 16px 36px rgba(0, 0, 0, 0.38);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Schließt das Menü sofort nach Klick, selbst wenn die Maus noch darüber ist */
+.menu-wrapper.is-closed {
+  min-width: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.menu-wrapper.is-closed .menu-dropdown {
+  grid-template-rows: 0fr !important;
+  margin-top: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 2px 0;
   border: 0;
   background: none;
   color: inherit;
-  cursor: none;
-  font: 500 0.68rem/1 "DM Mono", monospace;
-  letter-spacing: 0.06em;
+  font: 500 0.72rem/1 "DM Mono", monospace;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: none;
 }
 
-.menu-toggle { transition: transform 0.3s ease, letter-spacing 0.3s ease; }
-.menu-toggle:hover { transform: translateY(-3px) rotate(4deg) scale(1.08); letter-spacing: 0.04em;cursor: none;}
 .menu-toggle span {
   display: inline-block;
   width: 25px;
-  margin: 0 0 3px 9px;
   border-top: 1px solid currentColor;
   transition: width 0.3s ease, transform 0.3s ease;
 }
-.menu-toggle:hover span { width: 34px; transform: translateX(4px);}
 
-.menu {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
+.menu-wrapper:hover .menu-toggle span {
+  width: 34px;
+  transform: translateX(3px);
+}
+
+/* Die Links liegen direkt innerhalb der Box */
+.menu-dropdown {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    margin-top 0.35s ease,
+    visibility 0s linear 0.35s;
+}
+
+.menu-dropdown__inner {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 2.5vw 3vw;
-  background: var(--ink);
-  color: var(--paper);
-  transform: translateY(-101%);
-  transition: transform 0.65s var(--ease-editorial);
+  align-items: flex-end;
+  gap: 0.85rem;
+  padding: 0.2rem;
 }
-.menu.open { transform: translateY(0); }
-.menu-top { display: flex; justify-content: space-between; font: 400 0.68rem "DM Mono", monospace; text-transform: uppercase; }
-.menu nav { margin: auto 0; }
-.menu nav a { display: block; padding: 1.2vh 0; border-top: 1px solid #4d4e48; color: inherit; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 600; letter-spacing: -0.08em; line-height: 1; text-decoration: none; }
-.menu nav a:hover { color: var(--acid);cursor: none; }
-.menu nav a small { margin-right: 1rem; font: 400 0.65rem "DM Mono", monospace; vertical-align: middle; }
-.menu-links { display: flex; gap: 2rem; font: 0.7rem "DM Mono", monospace; }
 
-.progress { position: fixed; top: 110px; right: 16px; z-index: 19; width: 1px; height: 100px; background: #bab9b1; }
+/* Beim Hover dehnt sich die Box nach unten aus */
+.menu-wrapper:hover .menu-dropdown,
+.menu-wrapper:focus-within .menu-dropdown {
+  grid-template-rows: 1fr;
+  margin-top: 1.2rem;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease 0.08s,
+    margin-top 0.35s ease,
+    visibility 0s linear 0s;
+}
+
+/* Menüpunkte rechtsbündig */
+.menu-dropdown a {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  text-align: right;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.menu-dropdown a small {
+  font: 400 0.65rem/1 "DM Mono", monospace;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.menu-dropdown a:hover {
+  color: var(--acid);
+  transform: translateX(-3px);
+}
+
+.menu-dropdown a:hover small {
+  color: var(--acid);
+}
+
+/* Anpassung für Light Mode */
+body.light-mode .menu-wrapper:hover,
+body.light-mode .menu-wrapper:focus-within {
+  border-color: rgba(23, 24, 22, 0.25);
+  background: rgba(23, 24, 22, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 16px 36px rgba(23, 24, 22, 0.12);
+}
+
+body.light-mode .menu-dropdown a {
+  color: var(--paper);
+}
+
+body.light-mode .menu-dropdown a:hover {
+  color: var(--true-dark);
+}
+
+/* ---------- Mobile Anpassung ---------- */
+
+@media (max-width: 700px) {
+  .site-header {
+    height: 62px;
+  }
+  .menu-toggle {
+    cursor: pointer;
+  }
+  .menu-dropdown {
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 180px;
+    padding: 1.2rem 1.4rem;
+  }
+  .menu-dropdown__list a {
+    font-size: 0.88rem;
+  }
+}
+
+.progress { position: fixed; top: 110px; right: 16px; z-index: 19; width: 1px; height: 100px; background: #95948d; }
 .progress span { display: block; width: 100%; height: 0; background: var(--paper); }
 
 /* =========================================================
@@ -212,74 +366,6 @@ footer {
 .scroll-hint { margin-top: auto; font: 0.63rem "DM Mono", monospace; text-transform: uppercase; }
 .scroll-hint span { display: inline-block; margin-left: 5px; animation: bob 1.8s infinite; }
 @keyframes bob { 50% { transform: translateY(6px); } }
-
-/* =========================================================
-   HERO: MOTIV RECHTS IM HINTERGRUND
-   ========================================================= */
-.hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-.hero > .hero-art {
-  position: absolute;
-  z-index: 0;
-
-  right: clamp(-8rem, -6vw, -2rem);
-  bottom: clamp(-8rem, -10vh, -3rem);
-
-  width: min(54vw, 820px);
-  aspect-ratio: 0.72;
-
-  pointer-events: none;
-
-  -webkit-mask-image: radial-gradient(
-    ellipse 68% 72% at 62% 52%,
-    #000 30%,
-    rgba(0, 0, 0, 0.88) 50%,
-    rgba(0, 0, 0, 0.42) 68%,
-    transparent 100%
-  );
-
-  mask-image: radial-gradient(
-    ellipse 68% 72% at 62% 52%,
-    #000 30%,
-    rgba(0, 0, 0, 0.88) 50%,
-    rgba(0, 0, 0, 0.42) 68%,
-    transparent 100%
-  );
-
-  opacity: 0.99;
-
-  transform-origin: bottom right;
-}
-
-.hero-art img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-  object-position: right bottom;
-
-  mix-blend-mode: multiply;
-}
-
-/*
-  Im hellen Modus darf das Motiv etwas zurückhaltender sein.
-*/
-body.light-mode .hero-art {
-  opacity: 0.72;
-}
-
-body.light-mode .hero-art img {
-  filter: brightness(1.08) contrast(1.1) saturate(1.15);
-}
 
 /* ---------- Tablet ---------- */
 
@@ -535,6 +621,7 @@ body.light-mode .hero-art img {
   align-content: start;
   gap: 0.42rem;
   padding-top: clamp(0.5rem, 2.5vh, 2.3rem);
+  text-transform: uppercase;
   font-size: clamp(1rem, 1.5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -557,7 +644,6 @@ body.light-mode .hero-art img {
   margin: 0;
   font: 400 clamp(0.9rem, 1.1vw, 1.3rem) / 1.42 "DM Mono", monospace;
   letter-spacing: -0.055em;
-  text-transform: uppercase;
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 160ms ease-out, transform 300ms var(--ease-out);
@@ -739,7 +825,7 @@ body.light-mode .hero-art img {
   max-width: 9ch;
   font-size: clamp(1.3rem, 2.3vw, 3rem);
   font-weight: 600;
-  letter-spacing: -0.085em;
+  letter-spacing: -0.05em;
   line-height: 0.88;
   text-align: left;
 }
@@ -751,11 +837,11 @@ body.light-mode .hero-art img {
 }
 
 .work-card__detail-title {
-  max-width: 18ch;
+  max-width: 19ch;
   margin-top: auto;
   font-size: clamp(1.15rem, 1.8vw, 2.2rem);
   font-weight: 600;
-  letter-spacing: -0.075em;
+  letter-spacing: -0.050em;
   line-height: 0.9;
   text-align: left;
 }
@@ -765,7 +851,7 @@ body.light-mode .hero-art img {
   margin: 1rem 0 auto;
   color: var(--muted);
   font: 400 clamp(0.66rem, 0.82vw, 0.88rem) / 1.5 var(--font-mono);
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
   text-align: left;
 }
 
@@ -869,7 +955,7 @@ body.light-mode .hero-art img {
   color: var(--paper);
   font-size: clamp(1.9rem, 3vw, 3.6rem);
   font-weight: 480;
-  letter-spacing: -0.09em;
+  letter-spacing: -0.05em;
   line-height: 0.8;
   text-decoration: none;
 
@@ -988,27 +1074,14 @@ body.light-mode .history-company { color: #50514c; }
 body.light-mode .history-grid, body.light-mode .history-item, body.light-mode .connect-grid, body.light-mode .connect-item { border-color: #c9c8c0; }
 body.light-mode .progress span { background: var(--true-dark); }
 body.light-mode .work-card__front, body.light-mode .work-card__back { background: #f4e8d3; }
-.theme-toggle { position: absolute; top: 50%; left: 50%; z-index: 25; display: block; width: 74px; height: 34px; cursor: none; transform: translate(-50%, -50%); user-select: none; }
-.theme-toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.theme-toggle__track { position: relative; display: block; width: 100%; height: 100%; border: 1px solid rgba(241,240,234,.35); border-radius: 999px; background: rgba(241,240,234,.1); box-shadow: inset 0 1px 0 rgba(241,240,234,.18), 0 5px 18px rgba(0,0,0,.14); backdrop-filter: blur(12px) saturate(130%); transition: background .35s ease, border-color .35s ease, box-shadow .35s ease; }
-.theme-toggle__sun, .theme-toggle__moon { position: absolute; top: 50%; z-index: 1; font: 500 .85rem/1 "DM Mono", monospace; transform: translateY(-50%); transition: opacity .25s ease, color .35s ease; }
-.theme-toggle__sun { left: 10px; color: var(--paper); opacity: .45; }
-.theme-toggle__moon { right: 11px; color: var(--paper); }
-.theme-toggle__thumb { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; background: rgba(241,240,234,.9); box-shadow: 0 2px 8px rgba(0,0,0,.22), inset 0 1px 1px rgba(255,255,255,.75); transition: transform .42s var(--ease-out), background .35s ease, box-shadow .35s ease; }
-.theme-toggle input:checked + .theme-toggle__track { border-color: rgba(23,24,22,.3); background: rgba(23,24,22,.08); }
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb { transform: translateX(-40px); background: var(--true-dark); }
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__sun { color: var(--true-dark); opacity: 1; }
-.theme-toggle input:checked + .theme-toggle__track .theme-toggle__moon { color: var(--true-dark); opacity: .4; }
-.theme-toggle input:focus-visible + .theme-toggle__track { outline: 2px solid var(--acid); outline-offset: 4px; }
+
 
 .cursor-dot { position: fixed; z-index: 100; width: 12px; height: 12px; border-radius: 50%; background: #fff; mix-blend-mode: difference; pointer-events: none; transform: translate(-50%, -50%); transition: width .22s var(--ease-out), height .22s var(--ease-out), opacity .18s ease, transform .22s var(--ease-out); }
 .cursor-dot.hover, .cursor-dot.hero-text-hover { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+a, button {
+  cursor: none !important;
+}
 
 @media (max-width: 700px) {
   .cursor-dot { display: none; }
-  .theme-toggle { width: 64px; height: 30px; cursor: pointer; }
-  .theme-toggle__thumb { width: 22px; height: 22px; }
-  .theme-toggle input:checked + .theme-toggle__track .theme-toggle__thumb { transform: translateX(-34px); }
-  .theme-toggle__sun { left: 8px; }
-  .theme-toggle__moon { right: 9px; }
 }

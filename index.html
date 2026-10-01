@@ -11,35 +11,28 @@
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="progress" aria-hidden="true"><span></span></div>
 
-  <header class="site-header">
-    <!-- ✏️ EDITIEREN: Monogramm / Kurzname -->
-    <a class="brand" href="#top" aria-label="Zur Startseite">NW<span>®</span></a>
-       <!-- Neu: Dark-/Light-Mode-Toggle in der Header-Mitte -->
-    <label class="theme-toggle" for="theme-switch">
-        <input
-            type="checkbox"
-            id="theme-switch"
-            aria-label="Hellen Modus aktivieren"
-        >
-        <span class="theme-toggle__track">
-            <span class="theme-toggle__sun" aria-hidden="true">☀</span>
-            <span class="theme-toggle__moon" aria-hidden="true">☾</span>
-            <span class="theme-toggle__thumb"></span>
-        </span>
-    </label>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menü <span></span></button>
-  </header>
+    <header class="site-header">
+        <!-- Monogramm / Brand -->
+        <a class="brand" href="#top" aria-label="Zur Startseite">
+            NW<span>®</span>
+        </a>
 
-  <aside class="menu" id="menu" aria-hidden="true">
-    <div class="menu-top"><span>Navigation</span><button class="menu-close" type="button">Schließen ×</button></div>
-    <nav>
-        <a href="#top"><small>1 0</small> Start</a>
-        <a href="#history"><small>2 0</small> Historie</a>
-        <a href="#work"><small>3 0</small> Projekte</a>
-        <a href="#about"><small>4 0</small> Mehr über mich</a>
-        <a href="#contact"><small>5 0</small> Connect</a>
-    </nav>
-  </aside>
+    <!-- Menü Container mit Liquid-Glass Dropdown -->
+        <div class="menu-wrapper">
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-dropdown">
+            Menü <span></span>
+            </button>
+
+            <nav class="menu-dropdown" id="menu-dropdown" aria-label="Hauptnavigation">
+                <div class="menu-dropdown__inner">
+                    <a href="#top"><small>01</small> Start</a>
+                    <a href="#history"><small>02</small> Historie</a>
+                    <a href="#about"><small>03</small> Projekte</a>
+                    <a href="#work"><small>04</small> Über mich</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
     <main id="top">
         <section class="hero" aria-labelledby="hero-title">
@@ -57,10 +50,6 @@
                     <span class="line"><em>wird das schon.</em></span>
                 </div>
             </div>
-
-        <div class="hero-art" aria-hidden="true">
-            <img src="assets/nissan_front.png" alt="Nissan Front">
-        </div>
         
         <div class="hero-actions reveal">
             <a class="hero-icon magnetic" href="https://www.linkedin.com/in/nico-weht" target="_blank" rel="noopener" aria-label="LinkedIn-Profil">
@@ -192,10 +181,10 @@
 
                     <div class="about-fold__layout">
                         <div class="about-fold__services">
-                        <span>/ STRATEGIE &amp; KONZEPT</span>
-                        <span>/ RESPONSIVE WEBSITES</span>
-                        <span>/ WORDPRESS &amp; CMS</span>
-                        <span>/ SEO-GRUNDLAGEN</span>
+                        <span>/ Persönlich </span>
+                        <span>/ Kreativ</span>
+                        <span>/ Interaktiv</span>
+                        <span>/ Modern</span>
                         </div>
 
                         <img
@@ -206,9 +195,8 @@
                     </div>
 
                     <p class="about-fold__copy">
-                        Ich entwickle Websites, die nicht nur gut aussehen, sondern klar
-                        kommunizieren, schnell funktionieren und Besucher gezielt zu Kunden
-                        machen.
+                        Das hier ist meine kreative Ecke im Netz. Auf verschiedenen Weisen 
+                        abe ich meine Persönlichkeit und meine Projekte dargestellt, und das so kreativ wie möglich.
                     </p>
                     </div>
                 </article>
@@ -233,10 +221,10 @@
 
                     <div class="about-fold__layout">
                         <div class="about-fold__services">
-                        <span>/ USER FLOWS</span>
-                        <span>/ WIREFRAMES &amp; FLOWS</span>
-                        <span>/ INTERAKTIVE PROTOTYPEN</span>
-                        <span>/ DESIGN SYSTEMS</span>
+                        <span>/ Fachlich </span>
+                        <span>/ Zugeschnitten</span>
+                        <span>/ Qualitativ</span>
+                        <span>/ Informativ</span>
                         </div>
 
                         <img
@@ -247,9 +235,8 @@
                     </div>
 
                     <p class="about-fold__copy">
-                        Ich gestalte Interfaces, die Logik und Emotion verbinden. Sie sind vom
-                        ersten Klick an intuitiv, leicht verständlich und helfen Marken dabei,
-                        stärkere Verbindungen zu ihren Nutzern aufzubauen.
+                        Meine erste Website, die auf jemand anderes zugeschnitten ist. Sie vermittelt essenzielle Informationen 
+                        auf den ersten Blick, wirkt professionell und gibt Besuchern das Gefühl, dass echte Qualität im Mittelpunkt steht.
                     </p>
                     </div>
                 </article>
@@ -276,8 +263,8 @@
                         <div class="about-fold__services">
                         <span>/ BRANDING</span>
                         <span>/ VISUAL IDENTITY</span>
-                        <span>/ SOCIAL MEDIA DESIGN</span>
-                        <span>/ PRINT &amp; EDITORIAL</span>
+                        <span>/ ZEITLOS</span>
+                        <span>/ ERFAHREN</span>
                         </div>
 
                         <img
@@ -288,8 +275,9 @@
                     </div>
 
                     <p class="about-fold__copy">
-                        Visuelle Systeme mit Wiedererkennungswert: klar in der Idee, präzise in
-                        der Umsetzung und passend zu der Persönlichkeit deiner Marke.
+                        Gestützt auf jahrelange Erfahrung entsteht eine Visual Identity, 
+                        die gebaute Werte und klare Ästhetik dauerhaft zusammenführt. Sie macht die 
+                        Architektonische Qualität sichtbar macht und gibt Projekten ein unverwechselbares Gesicht.
                     </p>
                     </div>
                 </article>
@@ -314,10 +302,10 @@
 
                     <div class="about-fold__layout">
                         <div class="about-fold__services">
-                        <span>/ PRODUKTKONZEPTE</span>
-                        <span>/ APP INTERFACES</span>
-                        <span>/ PROTOTYPING</span>
-                        <span>/ USABILITY TESTING</span>
+                        <span>/ Harmonisch</span>
+                        <span>/ Kundennah</span>
+                        <span>/ Zielorientiert</span>
+                        <span>/ Wohlfühlend</span>
                         </div>
 
                         <img
@@ -328,8 +316,8 @@
                     </div>
 
                     <p class="about-fold__copy">
-                        Digitale Produkte brauchen eine klare Struktur. Ich übersetze komplexe
-                        Anforderungen in verständliche, funktionale und angenehme Erlebnisse.
+                        Gärten schaffen Freiräume, die den Alltag entschleunigen und spürbares Wohlbefinden schenken. 
+                        Kundennah gedacht und zielorientiert realisiert für ein natürliches Gesamtbild mit bleibendem Wert.
                     </p>
                     </div>
                 </article>
@@ -355,17 +343,17 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">01</span>
-                        <span class="work-card__title">Branding</span>
+                        <span class="work-card__title">Musik</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Marken mit Haltung.
+                            Sie muss einfach dabei sein.
                         </span>
                         <span class="work-card__copy">
-                            Positionierung, Markenstrategie, Naming und ein visuelles
-                            Fundament für eine unverwechselbare Identität.
+                            Musik ist klasse. Sie war schon von klein auf ein Teil meines Lebens. 
+                            Mit ihr kann ich konzentrierter arbeiten und vergesse dabei sogar manchmal die Zeit. 
                         </span>
                         </span>
                     </span>
@@ -377,17 +365,17 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">02</span>
-                        <span class="work-card__title">Visual Identity</span>
+                        <span class="work-card__title">Kochen</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Ein System, das trägt.
+                            Die richtige Mischung zählt.
                         </span>
                         <span class="work-card__copy">
-                            Logo, Typografie, Farbwelt, Bildsprache und klare
-                            Gestaltungsregeln für einen konsistenten Markenauftritt.
+                            Wie beim Kochen, muss auch beim Design alles stimmen,
+                            damit es am Ende gut aussieht.
                         </span>
                         </span>
                     </span>
@@ -399,17 +387,18 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">04</span>
-                        <span class="work-card__title">Strategie</span>
+                        <span class="work-card__title">Gesundheit</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Klar vor kreativ.
+                            Ohne geht nicht. 
                         </span>
                         <span class="work-card__copy">
-                            Zielgruppen, Wettbewerb und Prioritäten werden in eine klare,
-                            nachvollziehbare Richtung für Ihre Marke übersetzt.
+                            Ich lege viel Wert auf meine Gesundheit. Auswiegend Sport, 
+                            größstenteils gesunde Nahrung und meistens guter Schlaf. 
+                            Das ist das Mindeste, um funktionierend durch den Alltag zu kommen. 
                         </span>
                         </span>
                     </span>
@@ -421,17 +410,17 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">03</span>
-                        <span class="work-card__title">Web Design</span>
+                        <span class="work-card__title">Familie</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Digital klar gedacht.
+                            Miteinander schafft man mehr.
                         </span>
                         <span class="work-card__copy">
-                            Struktur, Interface und Inhalte für Webseiten, die
-                            Orientierung schaffen und sich hochwertig anfühlen.
+                            Sollte ich mal unschlüssig sein, ob privat oder beim Erstellen 
+                            von Websites, kann ich mich auf meine Familie so gut wie immer verlassen.
                         </span>
                         </span>
                     </span>
@@ -443,17 +432,18 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">05</span>
-                        <span class="work-card__title">Social Media</span>
+                        <span class="work-card__title">Lesen</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Wiedererkennbar im Feed.
+                            Von nichts kommt nichts.
                         </span>
                         <span class="work-card__copy">
-                            Vorlagen, Content-Formate und Kampagnenmotive für einen
-                            stimmigen Auftritt auf relevanten Kanälen.
+                            Gute Ideen kommen nicht aus dem Nichts. Ich lese gerne gute Thriller oder Sci-Fi-Geschichten, 
+                            die ein gutes Worldbuilding haben und sich dafür auch Zeit nehmen. 
+                            Genau da entsteht die Geduld fürs Detail, die ich auch in meine Arbeit einfließen lasse.
                         </span>
                         </span>
                     </span>
@@ -465,17 +455,17 @@
                     <span class="work-card__inner">
                         <span class="work-card__face work-card__front">
                         <span class="work-card__index">06</span>
-                        <span class="work-card__title">Print &amp; Editorial</span>
+                        <span class="work-card__title">Wirtschaft</span>
                         <span class="work-card__hint">Details ↗</span>
                         </span>
 
                         <span class="work-card__face work-card__back">
                         <span class="work-card__detail-title">
-                            Gedruckt mit Substanz.
+                            Form folgt Substanz.
                         </span>
-                        <span class="work-card__copy">
-                            Broschüren, Editorials, Geschäftsausstattung und Printmedien,
-                            die digital und analog zusammenpassen.
+                        <span class="work-card__copy">  
+                            Mein Hintergrund in Wirtschaft schärft den Blick fürs Wesenstliche. Es braucht keine 
+                            unnötigen Schnörkel, um eine gute Website zu erstellen.                         
                         </span>
                         </span>
                     </span>
@@ -494,26 +484,26 @@
         </div>        
         <div class="footer-connect__grid">
             <nav class="footer-connect__links" aria-label="Social Links">
-                <a href="https://www.linkedin.com/in/DEIN-PROFIL" target="_blank" rel="noopener">
+                <a href="https://www.linkedin.com/in/nico-weht" target="_blank" rel="noopener">
                     <span class="footer-connect__link-label">LinkedIn</span>
                 </a>
 
-                <a href="https://github.com/DEIN-PROFIL" target="_blank" rel="noopener" > 
+                <a href="https://github.com/NViking" target="_blank" rel="noopener" > 
                     <span class="footer-connect__link-label">GitHub</span>
                 </a>
 
-                <a href="https://www.youtube.com/@DEIN-KANAL" target="_blank" rel="noopener" >
+                <a href="https://www.youtube.com/@N_Viking" target="_blank" rel="noopener" >
                     <span class="footer-connect__link-label">YouTube</span>
                 </a>
 
-                <a href="https://www.instagram.com/DEIN-PROFIL" target="_blank"  rel="noopener" >
-                    <span class="footer-connect__link-label">Instagram</span>
+                <a href="https://www.goodreads.com/n_viking" target="_blank"  rel="noopener" >
+                    <span class="footer-connect__link-label">Goodreads</span>
                 </a>
             </nav>
 
             <address class="footer-connect__details">
-            <p> <strong>E-Mail</strong> <a href="mailto:deine.email@beispiel.de">deine.email@beispiel.de</a> </p>
-            <p> <strong>Telefon</strong> <a href="tel:+491234567890">+49 123 456 7890</a> </p>
+            <p> <strong>E-Mail</strong> <a href="mailto:officeweht@icloud.com">officeweht@icloud.com</a> </p>
+            <p> <strong>Telefon</strong> <a href="tel:+491705890856">+49 170 5890856</a> </p>
             </address>
         </div>
     </footer>

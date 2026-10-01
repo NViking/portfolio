@@ -7,39 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
     return value * value * (3 - 2 * value);
   };
 
-  /* ============ MENU ============ */
+/* ============ MENU (SOFORT-SCHLIESSEN NACH KLICK) ============ */
 
-  const menu = document.querySelector(".menu");
-  const menuOpenButton = document.querySelector(".menu-toggle");
-  const menuCloseButton = document.querySelector(".menu-close");
+const menuWrapper = document.querySelector(".menu-wrapper");
 
-  function closeMenu() {
-    if (!menu || !menuOpenButton) return;
-
-    menu.classList.remove("open");
-    menuOpenButton.setAttribute("aria-expanded", "false");
-    menu.setAttribute("aria-hidden", "true");
-  }
-
-  function openMenu() {
-    if (!menu || !menuOpenButton) return;
-
-    menu.classList.add("open");
-    menuOpenButton.setAttribute("aria-expanded", "true");
-    menu.setAttribute("aria-hidden", "false");
-  }
-
-  if (menuOpenButton) {
-    menuOpenButton.addEventListener("click", openMenu);
-  }
-
-  if (menuCloseButton) {
-    menuCloseButton.addEventListener("click", closeMenu);
-  }
-
-  document.querySelectorAll(".menu a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
+if (menuWrapper) {
+  // Klick auf Menüpunkt schließt das Dropdown sofort
+  menuWrapper.querySelectorAll(".menu-dropdown a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuWrapper.classList.add("is-closed");
+    });
   });
+
+  // Sobald die Maus den Bereich verlässt, wird der Hover-Effekt wieder aktiviert
+  menuWrapper.addEventListener("mouseleave", () => {
+    menuWrapper.classList.remove("is-closed");
+  });
+}
 
   /* ============ REVEAL ELEMENTS ============ */
 
@@ -521,42 +505,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ============ DARK / LIGHT MODE ============ */
+  /* ============ DARK / LIGHT MODE VIA MONOGRAMM (NW) ============ */
 
-  const themeSwitch = document.querySelector("#theme-switch");
-  const savedTheme = localStorage.getItem("theme");
+const brandButton = document.querySelector(".brand");
 
-  if (savedTheme === "light") {
-    document.body.classList.add("light-mode");
+// Gespeicherte Theme-Präferenz laden
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+  document.body.classList.add("light-mode");
+}
 
-    if (themeSwitch) {
-      themeSwitch.checked = true;
-      themeSwitch.setAttribute(
-        "aria-label",
-        "Dunklen Modus aktivieren"
-      );
-    }
-  }
+if (brandButton) {
+  brandButton.addEventListener("click", (event) => {
+    // Verhindert den Standard-Sprung, wechselt Theme und scrollt flüssig nach oben
+    event.preventDefault();
 
-  if (themeSwitch) {
-    themeSwitch.addEventListener("change", () => {
-      const isLightMode = themeSwitch.checked;
-
-      document.body.classList.toggle("light-mode", isLightMode);
-
-      localStorage.setItem(
-        "theme",
-        isLightMode ? "light" : "dark"
-      );
-
-      themeSwitch.setAttribute(
-        "aria-label",
-        isLightMode
-          ? "Dunklen Modus aktivieren"
-          : "Hellen Modus aktivieren"
-      );
-    });
-  }
+    const isLightNow = document.body.classList.toggle("light-mode");
+    localStorage.setItem("theme", isLightNow ? "light" : "dark");
+  });
+}
 
   /* ============ ZENTRALE SCROLL-AKTUALISIERUNG ============ */
 
