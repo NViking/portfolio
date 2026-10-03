@@ -229,6 +229,20 @@ if (menuWrapper) {
     animateHeroReveal();
   }
 
+  /* ============ HERO: HORIZONTALE SCROLL-LINIEN ============ */
+
+const heroElement = document.querySelector(".hero");
+
+function updateHeroLines() {
+  if (!heroElement) return;
+
+  const heroHeight = heroElement.offsetHeight || window.innerHeight;
+  // Progress läuft von 0 (ganz oben) bis 1 (Hero fast verlassen)
+  const progress = Math.min(1, Math.max(0, window.scrollY / (heroHeight * 0.75)));
+
+  heroElement.style.setProperty("--hero-scroll", progress.toFixed(3));
+}
+
   /* ============ HEADER ============ */
 
   const header = document.querySelector(".site-header");
@@ -385,7 +399,15 @@ if (menuWrapper) {
     });
   }
 
-  /* FOOTER */
+  /* ============ PROJEKT-BILDER: FEHLER-FALLBACK ============ */
+document.querySelectorAll(".about-fold__image").forEach((image) => {
+  const markMissing = () => image.classList.add("is-missing");
+
+  if (image.complete && image.naturalWidth === 0) markMissing();
+  image.addEventListener("error", markMissing);
+});
+
+/* FOOTER */
   const footerLinks = document.querySelectorAll(".footer-connect__links a");
   console.log(`${footerLinks.length} Footer-Links geladen.`);
 
@@ -539,6 +561,7 @@ if (brandButton) {
       updateHistoryFill();
       updateScrollLabels();
       updateHeaderColor();
+      updateHeroLines();
     });
   }
 
